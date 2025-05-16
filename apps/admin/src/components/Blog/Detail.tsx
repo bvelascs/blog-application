@@ -25,28 +25,46 @@ export function BlogDetail({ post }: { post: Post }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Reference for the content textarea (used for cursor position management)
-  const contentRef = useRef<HTMLTextAreaElement>(null);
-
-  // Form validation function
+  const contentRef = useRef<HTMLTextAreaElement>(null);  // Form validation function
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    // Check all required fields and add errors if missing
+    
+    // Validate title
     if (!title.trim()) newErrors.title = "Title is required";
-    if (!description.trim()) newErrors.description = "Description is required";
-    if (description.length > 200) newErrors.description = "Description is too long. Maximum is 200 characters";
+    
+    // Validate description
+    if (!description.trim()) {
+      newErrors.description = "Description is required";
+    } else if (description.length > 200) {
+      newErrors.description = "Description is too long. Maximum is 200 characters";
+    }
+    
+    // Validate other fields
     if (!content.trim()) newErrors.content = "Content is required";
-    if (!imageUrl.trim()) newErrors.imageUrl = "Image URL is required";
+    
+    // Validate image URL
+    if (!imageUrl.trim()) {
+      newErrors.imageUrl = "Image URL is required";
+    } else if (!imageUrl.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i)) {
+      newErrors.imageUrl = "This is not a valid URL";
+    }
+    
     if (!tags.trim()) newErrors.tags = "At least one tag is required";
     if (!category.trim()) newErrors.category = "Category is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   // Handler for saving the post
   const handleSave = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    // Always validate to ensure error messages are shown
+    validateForm();
+    // Return early if there are validation errors
+    if (Object.keys(errors).length > 0 || !validateForm()) {
+      setErrors(prev => ({...prev, form: "Please fix the errors before saving"}));
+      return;
+    }
     if (isSubmitting) return;    // Prevent double submission
 
     setIsSubmitting(true);
@@ -109,13 +127,22 @@ export function BlogDetail({ post }: { post: Post }) {
     }
     setIsPreview(!isPreview);
   };
-
   // Handle image URL changes and validate URL format
   const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setImageUrl(value);
-    // Only show preview if URL matches image file pattern
-    setImagePreview(value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i) ? value : "");
+    
+    // Validate URL format immediately
+    if (value && !value.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i)) {
+      setErrors(prev => ({...prev, imageUrl: "This is not a valid URL"}));
+    } else {
+      setErrors(prev => {
+        const {imageUrl, ...rest} = prev;
+        return rest;
+      });
+      // Only show preview if URL matches image file pattern
+      setImagePreview(value);
+    }
   };
 
   return (
@@ -164,11 +191,23 @@ export function BlogDetail({ post }: { post: Post }) {
         <div>
           <label htmlFor="description" className="block font-bold">
             Description
-          </label>
-          <textarea
+          </label>          <textarea
             id="description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setDescription(value);
+              // Validate length immediately
+              const tooLong = value.length > 200;
+              setErrors(prev => {
+                const {description, ...rest} = prev;
+                if (tooLong) {
+                  return {...rest, description: "Description is too long. Maximum is 200 characters"};
+                }
+                return rest;
+              });
+            }}
+            data-testid="description-input"
             className="mt-1 w-full border-b border-gray-300 p-2 outline-none"
             rows={5}
           />

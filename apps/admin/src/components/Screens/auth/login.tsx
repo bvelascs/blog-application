@@ -50,9 +50,8 @@ const LoginScreen = ({
 
   // Render login form
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <form onSubmit={submitHandler}>
-        <h1 className="pb-4 text-2xl font-bold">Sign in to your Admin account</h1>
+    <div className="flex h-screen w-screen items-center justify-center">      <form onSubmit={submitHandler}>
+        <h1 className="pb-4 text-2xl font-bold">Sign in to your account</h1>
         <div className="flex w-96 flex-col gap-3">
           <div className="flex flex-col">
             <label htmlFor="username" className="text-sm font-semibold">

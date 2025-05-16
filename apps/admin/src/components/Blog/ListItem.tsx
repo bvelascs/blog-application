@@ -83,13 +83,9 @@ export function BlogListItem({ post }: { post: Post }) {
         </div>
 
         {/* Post Description */}
-        <p className="mt-6 leading-relaxed text-700">{post.description}</p>
-
-        {/* Tags Display - Split comma-separated tags and map them */}
+        <p className="mt-6 leading-relaxed text-700">{post.description}</p>        {/* Tags Display - Join tags with comma and space */}
         <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500">
-          {post.tags.split(",").map((tag, i) => (
-            <span key={i}>#{tag.trim()}</span>
-          ))}
+          <span>#{post.tags.split(",").map(tag => tag.trim()).join(", #")}</span>
         </div>
 
         {/* Post Metrics Display (Views and Likes) */}
