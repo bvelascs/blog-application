@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import Image from "next/image";
 
 const AdminMenu = () => {
   // Handler function for user logout
@@ -28,11 +29,11 @@ const AdminMenu = () => {
     // Main navigation container with full width and shadow
     <div className="flex h-16 w-screen items-center justify-between shadow-sm">
       {/* Content container with padding and flex layout */}
-      <div className="container mx-auto flex h-full items-center justify-between px-4">
-        {/* Blog title/logo section */}
+      <div className="container mx-auto flex h-full items-center justify-between px-4">        {/* Blog title/logo section */}
         <h1 className="flex w-fit items-center justify-center space-x-4">
-          <Link href={"/"} className="w-full text-xl font-bold">
-            Admin of Full Stack Blog
+          <Link href={"/"} className="flex items-center gap-3 w-full">
+            <Image src="/wsulogo.png" alt="WSU Logo" width={40} height={40} />
+            <span className="text-xl font-bold">Admin of Full Stack Blog</span>
           </Link>
         </h1>
 

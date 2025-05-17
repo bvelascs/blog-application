@@ -3,6 +3,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
+  ssr: false,
+  loading: () => <div className="min-h-[500px] w-full animate-pulse bg-gray-100 rounded-md"></div>
+});
 
 export default function Page() {
   // Initialize form state with default values
@@ -119,21 +125,19 @@ export default function Page() {
           {errors.description && (
             <p className="text-red-500">{errors.description}</p>
           )}
-        </div>
-
-        {/* Content */}
+        </div>        {/* Content */}
         <div>
-          <label htmlFor="content" className="font-bold">
+          <label htmlFor="content" className="font-bold block mb-2">
             Content
           </label>
-          <textarea
-            id="content"
-            value={formData.content}
-            onChange={handleInputChange}
-            className="w-full border-b-1 border-gray-300 outline-0"
-            rows={5}
-          />
-          {errors.content && <p className="text-red-500">{errors.content}</p>}
+          <div className="border rounded-md">
+            <RichTextEditor
+              content={formData.content}
+              onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+              disabled={false}
+            />
+          </div>
+          {errors.content && <p className="mt-2 text-red-500">{errors.content}</p>}
         </div>
 
         {/* Image URL */}

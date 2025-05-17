@@ -1,8 +1,13 @@
 "use client"; // Marks this as a client-side component
 import type { Post } from "@repo/db/data";
-import { marked } from "marked"; // For converting markdown to HTML
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
+  ssr: false,
+  loading: () => <div className="min-h-[500px] w-full animate-pulse bg-gray-100 rounded-md"></div>
+});
 
 export function BlogDetail({ post }: { post: Post }) {
   // Initialize router for navigation
@@ -234,26 +239,23 @@ export function BlogDetail({ post }: { post: Post }) {
               className="mt-4 max-h-96 rounded-lg object-cover"
             />
           )}
-        </div>
-
-        <div>
-          <label htmlFor="content" className="block font-bold">
+        </div>        <div>
+          <label htmlFor="content" className="block font-bold mb-2">
             Content
           </label>
-          <textarea
-            id="content"
-            ref={contentRef}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className={`mt-1 w-full border-b border-gray-300 p-2 outline-none ${isPreview ? "hidden" : "block"}`}
-            rows={20}
-          />
+          <div className={`border rounded-md ${isPreview ? 'hidden' : 'block'}`}>
+            <RichTextEditor
+              content={content}
+              onChange={setContent}
+              disabled={false}
+            />
+          </div>
           <div
             data-test-id="content-preview"
-            className={`prose mt-4 border p-4 ${isPreview ? "block" : "hidden"}`}
-            dangerouslySetInnerHTML={{ __html: marked(content) }}
+            className={`prose mt-4 border p-4 ${isPreview ? 'block' : 'hidden'}`}
+            dangerouslySetInnerHTML={{ __html: content }}
           />
-          {errors.content && <p className="mt-1 text-red-500">{errors.content}</p>}
+          {errors.content && <p className="mt-2 text-red-500">{errors.content}</p>}
         </div>
 
         <div>

@@ -1,7 +1,7 @@
 import type { Post } from "@repo/db/data";
 import { BlogListItem } from "./ListItem";
 
-function getGreeting() {
+export function getGreeting() {
   const hour = new Date().getHours();
   if (hour >= 5 && hour < 12) return "Good morning";
   if (hour >= 12 && hour < 18) return "Good afternoon";
@@ -16,11 +16,9 @@ export function BlogList({ posts }: { posts: Post[] }) {
       </div>
     );
   }
-
   return (
     <div className="w-full">      <div className="p-4">
-        <h1 className="text-4xl font-bold">{getGreeting()}, Admin</h1>
-        <h2 className="text-4xl font-bold mt-2">From the blog</h2>
+        <h2 className="text-4xl font-bold">From the blog</h2>
         <p>Learn how to grow your business with our expert advice.</p>
         <div className="py-12">
           {posts.map((post) => (

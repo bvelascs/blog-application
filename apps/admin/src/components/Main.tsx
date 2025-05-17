@@ -1,7 +1,7 @@
 "use client";
 
 import type { Post } from "@repo/db/data";
-import BlogList from "./Blog/List";
+import BlogList, { getGreeting } from "./Blog/List";
 import { useEffect, useState } from "react";
 
 export function Main({
@@ -107,9 +107,11 @@ export function Main({
   function changeSortHandler(e: React.ChangeEvent<HTMLSelectElement>) {
     setSortOption(e.target.value);
   }
-
   return (
     <main className={className}>
+      <div className="w-full mb-6">
+        <h1 className="text-4xl font-bold">{getGreeting()}, Admin</h1>
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label htmlFor="content--search" className="font-bold text-gray-700">
