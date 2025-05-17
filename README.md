@@ -1,6 +1,6 @@
 # Blog Application
 
-## Objective
+## Objectives
 Develop a fully functional Blog application that meets the requirements from the three prior assignments, with additional enhancements and a polished user interface.
 
 ## Requirements
