@@ -1,10 +1,10 @@
 // This file is a Next.js API route that handles requests to the /api/posts endpoint.
 
-// Import PrismaClient to interact with the database
-import { PrismaClient } from '@prisma/client';
+// Import client from @repo/db/client to interact with the database
+import { client } from '@repo/db/client';
 
-// Initialize a single instance of PrismaClient for database operations
-const prisma = new PrismaClient();
+// Use the shared Prisma client instance
+const prisma = client.db;
 
 // Helper function to fetch all blog posts from the database
 // Returns a Promise that resolves to an array of posts

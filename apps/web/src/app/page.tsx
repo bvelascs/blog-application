@@ -1,8 +1,8 @@
 import { AppLayout } from "../components/Layout/AppLayout";
 import { Main } from "../components/Main";
-import { PrismaClient } from '@prisma/client';
+import { client } from '@repo/db/client';
 
-const prisma = new PrismaClient();
+const prisma = client.db;
 export const posts = await prisma.post.findMany({}) as any;
    
 

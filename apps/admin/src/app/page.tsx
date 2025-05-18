@@ -3,10 +3,10 @@ import { isLoggedIn } from "../utils/auth";
 import LoginScreen from "../components/Screens/auth/login";
 import { AppLayout } from "../components/Layout/AppLayout";
 import { Main } from "../components/Main";
-import { PrismaClient } from '@prisma/client';
+import { client } from '@repo/db/client';
 
 // Initialize Prisma client for database operations
-const prisma = new PrismaClient();
+const prisma = client.db;
 
 // Helper function to fetch all blog posts from the database
 async function getAllPosts() {
