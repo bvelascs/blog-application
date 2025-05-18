@@ -126,12 +126,11 @@ export function BlogDetail({ post }: { post: Post }) {
       {/* Post Footer */}
       <div className="flex justify-between py-4">
         <div>{views} views</div>
-        <div className="flex items-center space-x-4">
-          <svg
+        <div className="flex items-center space-x-4">          <svg
             onClick={handleLike}
             xmlns="http://www.w3.org/2000/svg"
             data-test-id="like-button"
-            fill={userLiked ? "red" : "none"}
+            fill={userLiked ? "red" : "none"} 
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="red"
