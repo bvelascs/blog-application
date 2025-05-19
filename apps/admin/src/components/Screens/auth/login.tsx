@@ -54,7 +54,7 @@ const LoginScreen = ({
         <div className="mb-6 w-full flex justify-center">
           <Image src="/wsubanner.jpg" alt="WSU Banner" width={384} height={192} className="rounded-md object-contain" />
         </div>
-        <h1 className="pb-4 text-2xl font-bold">Sign in to your Admin account</h1>
+        <h1 className="pb-4 text-2xl font-bold">Sign in to your account</h1>
         <div className="flex w-96 flex-col gap-3">
           <div className="flex flex-col">
             <label htmlFor="username" className="text-sm font-semibold">

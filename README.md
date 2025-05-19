@@ -57,40 +57,41 @@ blog-application/
 
 2. Install dependencies:
    ```bash
-   pnpm install
+   pnpm i
    ```
 
 3. Set up environment variables:
    ```bash
-   cp .env.example .env
+   USERNAME=admin
+   PASSWORD=123
+   JWT_SECRET=super-secret-password
    ```
 
-4. Initialize the database:
+4. Install turbo:
    ```bash
-   pnpm db:push
-   pnpm db:seed
+   npm i -g turbo
    ```
 
 5. Start the development server:
    ```bash
-   pnpm dev
+   turbo dev
    ```
 
 6. Access the applications:
    - Web: http://localhost:3001
-   - Admin: http://localhost:3000
+   - Admin: http://localhost:3002
 
 ## 📝 Requirements
 
 ### Complete All Three Assignments
-- ✅ All code and functionality from Assignments 1, 2, and 3 fully implemented
-- ✅ All associated tests pass successfully (unit tests, integration tests, etc.)
-- ✅ The application handles edge cases appropriately
+- All code and functionality from Assignments 1, 2, and 3 fully implemented
+- All associated tests pass successfully (unit tests, integration tests, etc.)
+- The application handles edge cases appropriately
 
 ### User Interface (UI)
-- ✅ Professional UI implemented with Tailwind CSS
-- ✅ Responsive design works seamlessly on both desktop and mobile devices
-- ✅ Consistent design language across all components
+- Professional UI implemented with Tailwind CSS
+- Responsive design works seamlessly on both desktop and mobile devices
+- Consistent design language across all components
 
 ### Implemented Features
 
@@ -98,9 +99,11 @@ blog-application/
    - Integrated rich text editing for creating and editing blog posts
    - Support for formatting, images, and code blocks
 
-2. **Pagination System**
-   - Implemented pagination for blog post listings
-   - Optimized for performance with large numbers of posts
+2. **Infinite Scroll Implementation**
+   - Modern, seamless content loading as users scroll
+   - Lazy-loading of blog posts for improved performance
+   - Backend API support with skip/take pagination pattern
+   - Optimised for handling large numbers of posts
 
 3. **Comment System**
    - Users can comment on blog posts
@@ -111,9 +114,9 @@ blog-application/
 
 ### Blog Posts API
 
-| Endpoint                | Method | Description                          | Authentication |
-|-------------------------|--------|--------------------------------------|----------------|
-| `/api/posts`            | GET    | Get all posts (paginated)            | Public         |
+| Endpoint                | Method | Description                                        | Authentication |
+|-------------------------|--------|----------------------------------------------------|----------------|
+| `/api/posts`            | GET    | Get posts with infinite scroll support (paginated)  | Public         |
 | `/api/posts/:urlId`     | GET    | Get a specific post by URL ID        | Public         |
 | `/api/posts`            | POST   | Create a new post                    | Admin only     |
 | `/api/posts/:id`        | PUT    | Update an existing post              | Admin only     |
@@ -127,17 +130,6 @@ blog-application/
 | `/api/posts/:postId/comments`   | POST   | Add a comment to a post         | Public         |
 | `/api/comments/:id`             | DELETE | Delete a comment                | Admin only     |
 
-## 🧪 Testing
-
-Run unit tests:
-```bash
-pnpm test
-```
-
-Run E2E tests:
-```bash
-pnpm test:e2e
-```
 
 ## 📊 Design Decisions
 
@@ -154,15 +146,12 @@ The Prisma schema is designed to support all blog features including:
 - View tracking with unique IP detection
 - Comment system with parent-child relationships
 
-### Performance Optimizations
+### Performance Optimisations
 - Static Site Generation for blog posts
 - Image optimization with Next.js Image component
-- Pagination to limit initial load size
+- Infinite scroll with lazy loading to limit initial load size
+- Intersection Observer API for efficient DOM updates
 - Proper data fetching strategies to minimize waterfall requests
-
-## 🚀 Deployment
-
-The application is deployed on Vercel with automatic deployments triggered by commits to the main branch.
 
 ## 📋 Deliverables
 - [ ] Source code in a GitHub/GitLab repository (provide the link)
@@ -170,15 +159,3 @@ The application is deployed on Vercel with automatic deployments triggered by co
 - [ ] CI pipeline executing the tests
 - [ ] Deployed application URL
 - [ ] A short demo video (3-5 minutes) showcasing the application's features and functionality
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
