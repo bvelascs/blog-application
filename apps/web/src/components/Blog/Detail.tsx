@@ -116,10 +116,9 @@ export function BlogDetail({ post }: { post: Post }) {
         ></article>
       </div>
 
-      {/* Post Tags */}
-      <div className="flex flex-wrap gap-3 py-4 text-sm text-blue-500">
+      {/* Post Tags */}      <div className="flex flex-wrap gap-3 py-4 text-sm text-blue-500">
         {post.tags.split(",").map((tag, index) => (
-          <span key={index}>#{tag}</span>
+          <span key={`${post.id}-tag-${index}`}>#{tag}</span>
         ))}
       </div>
 

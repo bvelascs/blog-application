@@ -44,10 +44,9 @@ export function ClientBlogListItem({ post, likes, views }: ClientBlogListItemPro
         <p className="mt-6 leading-relaxed text-700">{post.description}</p>
 
         {/* Tags Display */}
-        <div className="mt-6 flex flex-wrap gap-2">
-          {post.tags.split(",").map((tag, index) => (
+        <div className="mt-6 flex flex-wrap gap-2">          {post.tags.split(",").map((tag, index) => (
             <Link
-              key={index}
+              key={`${post.id}-tag-${index}`}
               href={`/tags/${tag.trim().toLowerCase().replace(" ", "-")}`}
               className="rounded-full bg-blue-100 px-2 py-1 text-blue-600 hover:bg-blue-200"
             >

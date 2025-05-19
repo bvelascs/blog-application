@@ -6,7 +6,7 @@
 
 A modern, responsive blog application built with Next.js, Tailwind CSS, and Prisma, featuring both user-facing and administrative interfaces. This project implements a fully functional blog system with rich text editing, pagination, and commenting capabilities.
 
-## 🎯 Objectives
+## 🎯 Objective
 
 Develop a fully functional Blog application that meets the requirements from the three prior assignments, with additional enhancements and a polished user interface.
 
@@ -60,12 +60,11 @@ blog-application/
    pnpm i
    ```
 
-3. Set up environment variables:
+3. Create a `.env` file in the root directory with the required environment variables:
    ```bash
-   USERNAME=admin
-   PASSWORD=123
-   JWT_SECRET=super-secret-password
+   cp .env.example .env
    ```
+   Then edit the `.env` file with your own secure credentials.
 
 4. Install turbo:
    ```bash

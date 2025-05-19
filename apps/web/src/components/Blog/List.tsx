@@ -34,10 +34,13 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
     try {
       const nextPage = currentPage + 1;
       const response = await fetch(`/api/posts?page=${nextPage}&limit=${POSTS_PER_PAGE}`);
-      const data = await response.json();
-      
-      if (data.posts && data.posts.length > 0) {
-        setVisiblePosts(prev => [...prev, ...data.posts]);
+      const data = await response.json();      if (data.posts && data.posts.length > 0) {
+        // Ensure no duplicate posts by checking IDs
+        setVisiblePosts(prev => {
+          const existingIds = new Set(prev.map((post: Post) => post.id));
+          const uniqueNewPosts = data.posts.filter((post: Post) => !existingIds.has(post.id));
+          return [...prev, ...uniqueNewPosts];
+        });
         setCurrentPage(nextPage);
         setHasMore(data.hasMore);
       } else {

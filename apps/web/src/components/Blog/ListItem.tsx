@@ -74,11 +74,10 @@ export async function BlogListItem({ post }: { post: Post }) {
         {/* Post Description */}
         <p className="mt-6 leading-relaxed text-700">{post.description}</p>
 
-        {/* Tags Section with Links */}
-        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500">
+        {/* Tags Section with Links */}        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500">
           {post.tags.split(",").map((tag, index) => (
             <Link
-              key={index}
+              key={`${post.id}-tag-${index}`}
               href={`/tags/${tag.trim().toLowerCase().replace(" ", "-")}`}
               className="rounded-full bg-blue-100 px-2 py-1 text-blue-600 hover:bg-blue-200"
             >

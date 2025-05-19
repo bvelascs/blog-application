@@ -6,11 +6,10 @@ import Link from "next/link";
 export function CategoryList({ posts }: { posts: Post[] }) {
   // TODO: Implement proper category list
   return (
-    <LinkList title="Categories">
-      <Link
+    <LinkList title="Categories">      <Link
         title={`category / DevOps`}
         href={`/category/devops`}
-        key={100}
+        key="devops-static"
         className="flex space-x-3 px-3"
       >
         <span
