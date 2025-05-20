@@ -23,21 +23,28 @@ export async function GET(request: NextRequest) {
   // This controls how many posts to load per "page"
   const limit = parseInt(searchParams.get("limit") || "5", 10);
   
-  try {
-    // Query the database for a batch of posts with pagination
+  try {    // Query the database for a batch of posts with pagination
     const posts = await client.post.findMany({
       where: { active: true },     // Only return published/active posts
       skip: page * limit,          // Skip previously loaded posts (page * limit)
       take: limit,                 // Take only the specified number of posts
-      orderBy: { date: 'desc' }    // Sort by newest posts first
+      orderBy: { date: 'desc' },   // Sort by newest posts first
+      include: {
+        likes: true                // Include the likes relation to count them
+      }
     });
+    
+    // Transform posts to include like counts
+    const postsWithLikeCounts = posts.map(post => ({
+      ...post,
+      likes: post.likes.length     // Replace likes relation with count
+    }));
     
     // Get total count of active posts for pagination calculations
     const totalPosts = await client.post.count({ where: { active: true } });
-    
-    // Return the posts along with pagination metadata
+      // Return the posts along with pagination metadata
     return NextResponse.json({
-      posts,                       // The batch of posts for this page
+      posts: postsWithLikeCounts,  // The batch of posts with like counts
       totalPosts,                  // Total number of posts in the database
       hasMore: (page + 1) * limit < totalPosts  // Boolean flag indicating if more posts exist
                                    // This tells the frontend whether to show a "load more" indicator

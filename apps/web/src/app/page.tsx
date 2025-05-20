@@ -3,7 +3,18 @@ import { Main } from "../components/Main";
 import { client } from '@repo/db/client';
 
 const prisma = client.db;
-export const posts = await prisma.post.findMany({}) as any;
+// Fetch posts with likes included
+const rawPosts = await prisma.post.findMany({
+  include: {
+    likes: true // Include the likes relation
+  }
+});
+
+// Transform posts to include like counts
+export const posts = rawPosts.map(post => ({
+  ...post,
+  likes: post.likes.length // Replace likes relation with count
+})) as any;
    
 
 export default async function Home() {

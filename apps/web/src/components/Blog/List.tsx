@@ -1,3 +1,6 @@
+//infinite scroll
+// This component is responsible for rendering a list of blog posts with infinite scrolling functionality.
+
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -18,11 +21,19 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
   const [loading, setLoading] = useState(false);
   const loaderRef = useRef<HTMLDivElement>(null);
   const POSTS_PER_PAGE = 5;
-  
   // Initialize with the first batch
   useEffect(() => {
-    setVisiblePosts(initialPosts.slice(0, POSTS_PER_PAGE));
-    setHasMore(initialPosts.length > POSTS_PER_PAGE);
+    // For debugging, log the likes values in the initial posts
+    console.log("Initial posts likes:", initialPosts.map(p => ({ id: p.id, likes: p.likes })));
+      // Make sure likes is always a number in initial posts
+    const formattedPosts = initialPosts.map(post => ({
+      ...post,
+      likes: typeof post.likes === 'number' ? post.likes : 
+             (typeof post.likes === 'object' && post.likes && 'length' in post.likes) ? (post.likes as any).length : 0
+    }));
+    
+    setVisiblePosts(formattedPosts.slice(0, POSTS_PER_PAGE));
+    setHasMore(formattedPosts.length > POSTS_PER_PAGE);
   }, [initialPosts]);
 
   // Load more posts when the user scrolls to the bottom
@@ -34,11 +45,21 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
     try {
       const nextPage = currentPage + 1;
       const response = await fetch(`/api/posts?page=${nextPage}&limit=${POSTS_PER_PAGE}`);
-      const data = await response.json();      if (data.posts && data.posts.length > 0) {
+      const data = await response.json();
+        // For debugging, log the likes values in the API response
+      console.log("API response posts likes:", data.posts?.map((p: any) => ({ id: p.id, likes: p.likes })) || []);
+        if (data.posts && data.posts.length > 0) {
         // Ensure no duplicate posts by checking IDs
         setVisiblePosts(prev => {
           const existingIds = new Set(prev.map((post: Post) => post.id));
-          const uniqueNewPosts = data.posts.filter((post: Post) => !existingIds.has(post.id));
+          const uniqueNewPosts = data.posts
+            .filter((post: any) => !existingIds.has(post.id))
+            .map((post: any) => ({
+              ...post,
+              // Make sure likes is always a number
+              likes: typeof post.likes === 'number' ? post.likes : 
+                     Array.isArray(post.likes) ? post.likes.length : 0
+            }));
           return [...prev, ...uniqueNewPosts];
         });
         setCurrentPage(nextPage);
