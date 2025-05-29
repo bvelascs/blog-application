@@ -1,9 +1,6 @@
 /**
  * Rich Text Editor Component
- * 
- * This component implements a fully featured WYSIWYG editor using TinyMCE.
- * It provides text formatting, media embedding, code samples, and other rich editing features.
- * The component is dynamically imported to avoid Server-Side Rendering (SSR) issues.
+ * This component provides a rich text editing interface using TinyMCE.
  */
 
 "use client"; // Mark as client component since TinyMCE requires browser APIs

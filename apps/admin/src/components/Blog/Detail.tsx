@@ -28,6 +28,7 @@ export function BlogDetail({ post }: { post: Post }) {
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Reference for the content textarea (used for cursor position management)
   const contentRef = useRef<HTMLTextAreaElement>(null);  // Form validation function
@@ -149,6 +150,46 @@ export function BlogDetail({ post }: { post: Post }) {
       setImagePreview(value);
     }
   };
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file as Blob);
+    
+    setIsUploading(true);
+    
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.imageUrl) {
+        setImageUrl(data.imageUrl);
+        setImagePreview(data.imageUrl);
+        setErrors(prev => {
+          const { imageUrl, ...rest } = prev;
+          return rest;
+        });
+      } else {
+        setErrors(prev => ({
+          ...prev, 
+          imageUrl: data.error || "Failed to upload image"
+        }));
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setErrors(prev => ({
+        ...prev, 
+        imageUrl: "Failed to upload image"
+      }));
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -221,15 +262,40 @@ export function BlogDetail({ post }: { post: Post }) {
 
         <div>
           <label htmlFor="image-url" className="block font-bold">
-            Image URL
+            Image
           </label>
-          <input
-            id="image-url"
-            type="text"
-            value={imageUrl}
-            onChange={handleImageUrlChange}
-            className="mt-1 w-full border-b border-gray-300 p-2 outline-none"
-          />
+          
+          {/* Image Upload Section */}
+          <div className="mt-2 flex flex-col gap-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Upload a new image:</p>
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                onChange={handleImageUpload}
+                className="block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-md file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-blue-50 file:text-blue-700
+                  hover:file:bg-blue-100"
+              />
+              {isUploading && <span className="mt-2 inline-block text-blue-600">Uploading...</span>}
+            </div>
+            
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Or enter an image URL:</p>
+              <input
+                id="image-url"
+                type="text"
+                value={imageUrl}
+                onChange={handleImageUrlChange}
+                disabled={isUploading}
+                className="mt-1 w-full border-b border-gray-300 p-2 outline-none"
+              />
+            </div>
+          </div>
+          
           {errors.imageUrl && <p className="mt-1 text-red-500">{errors.imageUrl}</p>}
           {imagePreview && (
             <img
@@ -283,7 +349,7 @@ export function BlogDetail({ post }: { post: Post }) {
           <button
             type="button"
             onClick={handleSave}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isUploading}
             className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 disabled:bg-blue-300"
           >
             {isSubmitting ? "Saving..." : "Save"}

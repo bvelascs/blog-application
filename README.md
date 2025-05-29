@@ -15,6 +15,7 @@ Develop a fully functional Blog application that meets the requirements from the
 - **Frontend**: Next.js 15, React 19, Tailwind CSS 4
 - **Backend**: Next.js API routes, Prisma ORM
 - **Database**: SQLite (development), PostgreSQL (production)
+- **Storage**: AWS S3 for image uploads
 - **Testing**: Vitest, Playwright for E2E testing
 - **Deployment**: Vercel
 - **CI/CD**: GitHub Actions
@@ -104,11 +105,11 @@ blog-application/
    - Backend API support with skip/take pagination pattern
    - Optimised for handling large numbers of posts
 
-3. **Comment System**
-   - Users can comment on blog posts
-   - Support for nested replies
-   - Moderation capabilities in the admin interface
-
+3. **Image Upload System**
+   - Direct image uploads to AWS S3 cloud storage
+   - Support for JPG, PNG, and GIF formats
+   - Automatic URL generation for uploaded images
+   - Image preview functionality
 ## 🔍 API Reference
 
 ### Blog Posts API
@@ -120,6 +121,12 @@ blog-application/
 | `/api/posts`            | POST   | Create a new post                    | Admin only     |
 | `/api/posts/:id`        | PUT    | Update an existing post              | Admin only     |
 | `/api/posts/:id`        | DELETE | Delete a post                        | Admin only     |
+
+### Image Upload API
+
+| Endpoint          | Method | Description                                      | Authentication |
+|-------------------|--------|--------------------------------------------------|----------------|
+| `/api/upload`     | POST   | Upload an image to AWS S3 and return the URL     | Admin only     |
 
 ### Comments API
 

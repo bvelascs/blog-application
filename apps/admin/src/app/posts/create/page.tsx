@@ -27,7 +27,54 @@ export default function Page() {
   // State for handling validation errors and success messages
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [successMessage, setSuccessMessage] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
   const router = useRouter(); // Next.js router for navigation
+
+  // Handle image upload
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", file as Blob);
+    
+    setIsUploading(true);
+    
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.imageUrl) {
+        setFormData(prev => ({
+          ...prev,
+          imageUrl: data.imageUrl
+        }));
+        setImagePreview(data.imageUrl);
+        setErrors(prev => {
+          const { imageUrl, ...rest } = prev;
+          return rest;
+        });
+      } else {
+        setErrors(prev => ({
+          ...prev, 
+          imageUrl: data.error || "Failed to upload image"
+        }));
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setErrors(prev => ({
+        ...prev, 
+        imageUrl: "Failed to upload image"
+      }));
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Handle changes in form inputs
   // Works with text inputs, textareas, and checkboxes
@@ -37,6 +84,13 @@ export default function Page() {
       ...prev,
       [id]: type === "checkbox" ? checked : value, // Special handling for checkbox inputs
     }));
+    
+    // Update image preview when URL changes
+    if (id === "imageUrl") {
+      if (value && /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(value)) {
+        setImagePreview(value);
+      }
+    }
   };
 
   // Validate form inputs before submission
@@ -51,7 +105,7 @@ export default function Page() {
     // Image URL validation with regex pattern
     if (!formData.imageUrl.trim()) {
       newErrors.imageUrl = "Image URL is required";
-    } else if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/.test(formData.imageUrl)) {
+    } else if (!/^https?:\/\/.+\.(jpg|jpeg|png|gif)$/i.test(formData.imageUrl)) {
       newErrors.imageUrl = "This is not a valid URL";
     }
 
@@ -140,19 +194,57 @@ export default function Page() {
           {errors.content && <p className="mt-2 text-red-500">{errors.content}</p>}
         </div>
 
-        {/* Image URL */}
+        {/* Image Upload and URL */}
         <div>
-          <label htmlFor="imageUrl" className="font-bold">
-            Image URL
+          <label htmlFor="image-upload" className="font-bold block">
+            Image
           </label>
-          <input
-            id="imageUrl"
-            type="text"
-            value={formData.imageUrl}
-            onChange={handleInputChange}
-            className="w-full border-b-1 border-gray-300 outline-0"
-          />
+          
+          {/* Image Upload Section */}
+          <div className="mt-2 flex flex-col gap-4">
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Upload a new image:</p>
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/jpeg,image/png,image/gif"
+                onChange={handleImageUpload}
+                className="block w-full text-sm text-gray-500
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-md file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-blue-50 file:text-blue-700
+                  hover:file:bg-blue-100"
+              />
+              {isUploading && <span className="mt-2 inline-block text-blue-600">Uploading...</span>}
+            </div>
+            
+            <div>
+              <p className="text-sm text-gray-600 mb-2">Or enter an image URL:</p>
+              <input
+                id="imageUrl"
+                type="text"
+                value={formData.imageUrl}
+                onChange={handleInputChange}
+                disabled={isUploading}
+                className="w-full border-b-1 border-gray-300 outline-0"
+              />
+            </div>
+          </div>
+          
           {errors.imageUrl && <p className="text-red-500">{errors.imageUrl}</p>}
+          
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">Image Preview:</p>
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="max-h-96 rounded-lg object-cover"
+              />
+            </div>
+          )}
         </div>
 
         {/* Date */}
@@ -233,9 +325,10 @@ export default function Page() {
         <button
           type="button"
           onClick={handleSave}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          disabled={isUploading}
+          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-blue-300"
         >
-          Save
+          {isUploading ? "Uploading..." : "Save"}
         </button>
       </form>
     </div>

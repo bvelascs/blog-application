@@ -17,8 +17,11 @@
     "node": ">=18"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.817.0",
+    "@aws-sdk/s3-request-presigner": "^3.817.0",
     "@prisma/client": "^6.3.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "prisma": "^6.3.1"
+    "prisma": "^6.3.1",
+    "uuid": "^11.1.0"
   }
 }
