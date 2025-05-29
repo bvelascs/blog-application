@@ -26,12 +26,13 @@ export function BlogDetail({ post }: { post: Post }) {
   const [isPreview, setIsPreview] = useState(false);
   const [imagePreview, setImagePreview] = useState(post?.imageUrl || "");
   const [cursorPosition, setCursorPosition] = useState<number | null>(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   // Reference for the content textarea (used for cursor position management)
-  const contentRef = useRef<HTMLTextAreaElement>(null);  // Form validation function
+  const contentRef = useRef<HTMLTextAreaElement>(null);// Form validation function
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     
@@ -60,7 +61,38 @@ export function BlogDetail({ post }: { post: Post }) {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };  // Handler for deleting the post
+  const handleDelete = async () => {
+    if (!post?.id) return;
+    
+    // Confirm deletion with user
+    if (!window.confirm(`Are you sure you want to delete "${post.title}"? This action cannot be undone.`)) {
+      return;
+    }
+    
+    setIsDeleting(true);
+    setDeleteError("");
+    
+    try {
+      const response = await fetch(`/api/posts/delete?id=${post.id}`, {
+        method: "DELETE",
+      });
+      
+      if (response.ok) {
+        // Redirect to main page after successful deletion
+        router.push("/");
+      } else {
+        const data = await response.json();
+        setDeleteError(data.error || "Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      setDeleteError("An unexpected error occurred");
+    } finally {
+      setIsDeleting(false);
+    }
   };
+
   // Handler for saving the post
   const handleSave = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -336,16 +368,34 @@ export function BlogDetail({ post }: { post: Post }) {
             className="mt-1 w-full border-b border-gray-300 p-2 outline-none"
           />
           {errors.tags && <p className="mt-1 text-red-500">{errors.tags}</p>}
-        </div>
-
+        </div>        {/* Delete error message */}
+        {deleteError && (
+          <p className="mt-4 text-red-500">{deleteError}</p>
+        )}
+        
         <div className="flex justify-between py-4">
-          <button
-            type="button"
-            onClick={togglePreview}
-            className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-          >
-            {isPreview ? "Close Preview" : "Preview"}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              type="button"
+              onClick={togglePreview}
+              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+            >
+              {isPreview ? "Close Preview" : "Preview"}
+            </button>
+            
+            {/* Only show delete button if editing an existing post */}
+            {post?.id && (
+              <button
+                type="button"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="rounded bg-red-500 px-6 py-2 text-white hover:bg-red-600 disabled:bg-red-300"
+              >
+                {isDeleting ? "Deleting..." : "Delete Post"}
+              </button>
+            )}
+          </div>
+          
           <button
             type="button"
             onClick={handleSave}

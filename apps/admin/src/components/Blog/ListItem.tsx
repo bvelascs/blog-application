@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useState } from "react";
 
 // Component that displays a single blog post in a list view
-export function BlogListItem({ post }: { post: Post }) {
-  // State to track post's active status
+export function BlogListItem({ post }: { post: Post }) {  // State to track post's active status and loading states
   const [active, setActive] = useState(post.active);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
 
   // Function to toggle post's active status via API
   const toggleActive = async () => {
@@ -31,6 +32,35 @@ export function BlogListItem({ post }: { post: Post }) {
       console.error("Error updating post status:", error);
     }
   };
+  
+  // Function to delete a post
+  const deletePost = async () => {
+    if (!window.confirm(`Are you sure you want to delete "${post.title}"? This action cannot be undone.`)) {
+      return;
+    }
+    
+    setIsDeleting(true);
+    setDeleteError("");
+    
+    try {
+      const response = await fetch(`/api/posts/delete?id=${post.id}`, {
+        method: "DELETE",
+      });
+      
+      if (response.ok) {
+        // Refresh the page after successful deletion
+        window.location.reload();
+      } else {
+        const data = await response.json();
+        setDeleteError(data.error || "Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      setDeleteError("An unexpected error occurred");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     // Main article container with hover effects
@@ -51,23 +81,35 @@ export function BlogListItem({ post }: { post: Post }) {
           className="text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-blue-600 dark:text-white"
         >
           {post.title}
-        </Link>
-
-        {/* Active/Inactive Toggle Button 
-            Changes color based on active state:
-            - Green for active
-            - Red for inactive */}
-        <button
-          data-test-id="active-button"
-          onClick={toggleActive}
-          className="mt-2 rounded-full px-4 py-2 text-sm font-semibold w-48"
-          style={{
-            backgroundColor: active ? "#dcfce7" : "#fee2e2",
-            color: active ? "#047857" : "#b91c1c",
-          }}
-        >
-          {active ? "Active" : "Inactive"}
-        </button>
+        </Link>        {/* Button Action Area */}
+        <div className="flex space-x-2 mt-2">
+          {/* Active/Inactive Toggle Button */}
+          <button
+            data-test-id="active-button"
+            onClick={toggleActive}
+            className="rounded-full px-4 py-2 text-sm font-semibold w-48"
+            style={{
+              backgroundColor: active ? "#dcfce7" : "#fee2e2",
+              color: active ? "#047857" : "#b91c1c",
+            }}
+          >
+            {active ? "Active" : "Inactive"}
+          </button>
+          
+          {/* Delete Button */}
+          <button
+            onClick={deletePost}
+            disabled={isDeleting}
+            className="rounded-full px-4 py-2 text-sm font-semibold bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </button>
+        </div>
+        
+        {/* Delete Error Message */}
+        {deleteError && (
+          <p className="mt-2 text-red-500 text-sm">{deleteError}</p>
+        )}
 
         {/* Post Date and Category Information */}
         <div className="mt-4 text-sm text-500">
