@@ -28,6 +28,11 @@ export function Main({
   });
 
   const [sortOption, setSortOption] = useState<string>("");
+  
+  // Calculate dashboard metrics
+  const totalPosts = posts.length;
+  const activeTotalPosts = posts.filter(post => post.active).length;
+  const draftPosts = posts.filter(post => !post.active).length;
 
   function applyFilters() {
     let filteredPosts = posts.filter((post) => !Object.keys(post).includes("added"));
@@ -109,72 +114,135 @@ export function Main({
   }
   return (
     <main className={className}>
-      <div className="w-full mb-6">
-        <h1 className="text-4xl font-bold">{getGreeting()}, Admin</h1>
+      {/* Welcome message */}
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#333f48]">{getGreeting()}, Admin</h1>
+        <p className="text-gray-600">Welcome to your WSU Blog Administration Dashboard</p>
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="content--search" className="font-bold text-gray-700">
-            Filter by Content:
-          </label>
-          <input
-            id="content--search"
-            onChange={changeContentHandler}
-            className="border-b-1 h-12 w-full border-gray-300 outline-none"
-            type="text"
-            name="search"
-            placeholder="Search"
-          />
+      
+      {/* Stats cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-[#a31631]">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-red-100 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#a31631]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">Total Posts</p>
+              <p className="text-3xl font-bold text-gray-800">{totalPosts}</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="tag--search" className="font-bold text-gray-700">
-            Filter by tag:
-          </label>
-          <input
-            id="tag--search"
-            onChange={changeTagHandler}
-            className="border-b-1 h-12 w-full border-gray-300 outline-none"
-            type="text"
-            name="search"
-            placeholder="Search"
-          />
+        
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-[#333f48]">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-blue-100 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#333f48]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">Active Posts</p>
+              <p className="text-3xl font-bold text-gray-800">{activeTotalPosts}</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="date--search" className="font-bold text-gray-700">
-            Filter by Date Created:
-          </label>
-          <input
-            id="date--search"
-            onChange={changeDateHandler}
-            className="border-b-1 h-12 w-full border-gray-300 outline-none"
-            type="text"
-            name="search"
-            placeholder="Search"
-          />
+        
+        <div className="bg-white rounded-lg shadow p-6 border-l-4 border-yellow-500">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-yellow-100 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">Draft Posts</p>
+              <p className="text-3xl font-bold text-gray-800">{draftPosts}</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="sort" className="font-bold text-gray-700">
-            Sort By:
-          </label>
-          <select
-            id="sort"
-            onChange={changeSortHandler}
-            className="border-b-1 h-12 w-full border-gray-300 outline-none"
-          >
-            <option value="">None</option>
-            <option value="title-asc">Title ASC</option>
-            <option value="title-desc">Title DESC</option>
-            <option value="date-asc">Date ASC</option>
-            <option value="date-desc">Date DESC</option>
-          </select>
+      </div>
+      
+      {/* Search and filters section */}
+      <div className="bg-white rounded-lg shadow p-6 mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-[#333f48]">Post Filters</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="content--search" className="block text-sm font-medium text-gray-700 mb-1">
+              Filter by content:
+            </label>
+            <input
+              id="content--search"
+              onChange={changeContentHandler}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#a31631] focus:border-[#a31631]"
+              type="text"
+              placeholder="Search in title, description, or content"
+            />
+          </div>
+          <div>
+            <label htmlFor="tag--search" className="block text-sm font-medium text-gray-700 mb-1">
+              Filter by tag:
+            </label>
+            <input
+              id="tag--search"
+              onChange={changeTagHandler}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#a31631] focus:border-[#a31631]"
+              type="text"
+              placeholder="Enter tag name"
+            />
+          </div>
+          <div>
+            <label htmlFor="date--search" className="block text-sm font-medium text-gray-700 mb-1">
+              Filter by Date Created:
+            </label>
+            <input
+              id="date--search"
+              onChange={changeDateHandler}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#a31631] focus:border-[#a31631]"
+              type="text"
+              placeholder="YYYY-MM-DD format"
+            />
+          </div>
+          <div>
+            <label htmlFor="sort" className="block text-sm font-medium text-gray-700 mb-1">
+              Sort By:
+            </label>
+            <select
+              id="sort"
+              onChange={changeSortHandler}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#a31631] focus:border-[#a31631]"
+            >
+              <option value="">None</option>
+              <option value="title-asc">Title (A-Z)</option>
+              <option value="title-desc">Title (Z-A)</option>
+              <option value="date-asc">Date (Oldest First)</option>
+              <option value="date-desc">Date (Newest First)</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      {activePosts.length === 0 ? (
-        <p>0 posts</p>
-      ) : (
-        <BlogList posts={activePosts} />
-      )}
+      {/* Posts list */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="border-b border-gray-200 px-6 py-4">
+          <h2 className="text-xl font-semibold text-[#333f48]">Posts</h2>
+        </div>
+        <div className="p-6">
+          {activePosts.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <p className="text-xl">No posts found</p>
+              <p className="mt-2">Try adjusting your search or filter criteria</p>
+            </div>
+          ) : (
+            <BlogList posts={activePosts} />
+          )}
+        </div>
+      </div>
     </main>
   );
 }

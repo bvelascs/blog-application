@@ -24,33 +24,35 @@ const AdminMenu = () => {
       console.error("Logout failed");
     }
   }
-
   return (
     // Main navigation container with full width and shadow
-    <div className="flex h-16 w-screen items-center justify-between shadow-sm">
+    <div className="bg-[#a31631] text-white w-screen shadow-lg">
       {/* Content container with padding and flex layout */}
-      <div className="container mx-auto flex h-full items-center justify-between px-4">        {/* Blog title/logo section */}
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        {/* Blog title/logo section */}
         <h1 className="flex w-fit items-center justify-center space-x-4">
           <Link href={"/"} className="flex items-center gap-3 w-full">
-            <Image src="/wsulogo.png" alt="WSU Logo" width={40} height={40} />
-            <span className="text-xl font-bold">Admin of Full Stack Blog</span>
+            <div className="bg-white p-1 rounded">
+              <Image src="/wsulogo.png" alt="WSU Logo" width={40} height={40} className="object-contain" />
+            </div>
+            <span className="text-xl font-bold">WSU Admin Portal</span>
           </Link>
         </h1>
 
         {/* Navigation buttons container */}
-        <div>
+        <div className="flex items-center gap-4">
           {/* Create Post button with link */}
           <Link
             href={"/posts/create"}
-            className="cursor-pointer rounded-md border-none px-4 py-2"
+            className="bg-white text-[#a31631] hover:bg-gray-100 cursor-pointer rounded-md border-none px-4 py-2 font-medium transition-colors"
           >
             Create Post
           </Link>
 
-            {/* Logout button */}
+          {/* Logout button */}
           <button
             onClick={logoutHandler}
-            className="bg-wsu hover:bg-wsu-light cursor-pointer rounded-md border-none px-4 py-2 text-white"
+            className="bg-[#333f48] hover:bg-[#5a6a76] cursor-pointer rounded-md border-none px-4 py-2 text-white font-medium transition-colors"
           >
             Logout
           </button>

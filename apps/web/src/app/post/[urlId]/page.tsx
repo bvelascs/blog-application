@@ -1,28 +1,42 @@
-import { posts } from "@/app/page";
 import { BlogDetail } from "@/components/Blog/Detail";
-import { getLikes } from "@/components/Blog/ListItem";
 import { AppLayout } from "@/components/Layout/AppLayout";
-import { Post } from "@repo/db/data";
+import { client } from '@repo/db/client';
+
+const prisma = client.db;
 
 interface PageProps {
-  params: Promise<{ urlId: string }>;
+  params: { urlId: string };
 }
 
 export default async function Page({ params }: PageProps) {
-  const { urlId } = await params;
+  const { urlId } = params;
 
-  const post = posts.find((post: Post) => post.urlId.toString() === urlId);
-  if (!post) {
+  // Fetch the specific post directly from the database
+  const post = await prisma.post.findUnique({
+    where: { urlId },
+    include: { likes: true }
+  });
+
+  // Process the post to include like count instead of array
+  const processedPost = post ? {
+    ...post,
+    likes: post.likes.length
+  } : null;
+
+  if (!processedPost) {
     return (
       <AppLayout>
-        <div>Post not found</div>
+        <div className="container mx-auto py-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">Post not found</h1>
+          <p>The post you're looking for doesn't exist or may have been removed.</p>
+        </div>
       </AppLayout>
     );
   }
 
   return (
     <AppLayout>
-      <BlogDetail post={post}/>
+      <BlogDetail post={processedPost}/>
     </AppLayout>
   );
 }

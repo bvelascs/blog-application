@@ -13,6 +13,11 @@
   --text-secondaryHover: theme("colors.gray.400");
   --wsu: #a31631;
   --wsu-light: #853846;
+  --wsu-secondary: #333f48;
+  --wsu-secondary-light: #5a6a76;
+  --wsu-accent: #ffcd00;
+  --wsu-light-gray: #f5f5f5;
+  --wsu-border: #e2e2e2;
 }
 
 html[data-theme="dark"] {
@@ -22,6 +27,10 @@ html[data-theme="dark"] {
   --textHover: theme("colors.gray.300");
   --text-secondary: theme("colors.gray.400");
   --text-secondaryHover: theme("colors.gray.500");
+  --wsu: #a31631;
+  --wsu-light: #853846;
+  --wsu-secondary: #333f48;
+  --wsu-secondary-light: #5a6a76; 
 }
 
 html {
@@ -29,30 +38,41 @@ html {
   color: var(--text);
 }
 
-@theme inline {
-  --color-primary: var(--text);
-  --color-primaryHover: var(--textHover);
-  --color-secondary: var(--text-secondary);
-  --color-secondaryHover: var(--text-secondaryHover);
-  --color-wsu: var(--wsu);
-  --color-wsu-light: var(--wsu-light);
+/* WSU specific styles */
+.wsu-btn-primary {
+  background-color: var(--wsu);
+  color: white;
+  transition: all 0.2s ease;
 }
 
-@keyframes progress-bar {
+.wsu-btn-primary:hover {
+  background-color: var(--wsu-light);
+}
+
+.wsu-btn-secondary {
+  background-color: var(--wsu-secondary);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.wsu-btn-secondary:hover {
+  background-color: var(--wsu-secondary-light);
+}
+
+.wsu-card {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  background-color: white;
+}
+
+.wsu-border-left {
+  border-left: 4px solid var(--wsu);
+}
+
+/* Animation for progress bars */
+@keyframes progress {
   0% {
     width: 0%;
-  }
-  20% {
-    width: 20%;
-  }
-  40% {
-    width: 40%;
-  }
-  60% {
-    width: 60%;
-  }
-  80% {
-    width: 80%;
   }
   100% {
     width: 100%;
@@ -60,5 +80,5 @@ html {
 }
 
 .animate-progress-bar {
-  animation: progress-bar 2s ease-in-out infinite;
+  animation: progress 2s linear infinite;
 }
