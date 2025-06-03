@@ -3,6 +3,8 @@
 
 // Import Prisma ORM for database operations
 import { PrismaClient } from "@prisma/client";
+import { isLoggedIn } from "../../../../../utils/auth";
+import { NextResponse } from "next/server";
 
 // Initialize Prisma client for database connections
 const prisma = new PrismaClient();
@@ -33,16 +35,24 @@ async function updatePost(id: number, title: string, description: string, conten
 
 // POST endpoint handler
 export async function POST(request: Request) {
-  // Extract updated post details from request body
-  const { id, title, description, content, imageUrl, tags, category } = await request.json();
-
   try {
+    // Check if user is logged in with valid JWT token
+    if (!await isLoggedIn()) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    // Extract updated post details from request body
+    const { id, title, description, content, imageUrl, tags, category } = await request.json();
+
     // Attempt to update the post with new details
     const post = await updatePost(id, title, description, content, imageUrl, tags, category);
+    
     // Return success response with updated post data
-    return new Response(JSON.stringify(post), { status: 200 });
+    return NextResponse.json(post, { status: 200 });
   } catch (error) {
+    console.error("Error updating post:", error);
+    
     // Return error response if update fails
-    return new Response("Error updating post", { status: 500 });
+    return NextResponse.json({ error: "Error updating post" }, { status: 500 });
   }
 }

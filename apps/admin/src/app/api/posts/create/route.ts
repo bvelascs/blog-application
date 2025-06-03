@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import { isLoggedIn } from "../../../../utils/auth";
+import { NextResponse } from "next/server";
 
 // Initialize Prisma client for database operations
 const prisma = new PrismaClient();
@@ -25,27 +27,29 @@ async function createPost(title: string, description: string, content: string, i
 
 // API route handler for POST requests
 export async function POST(request: Request) {
-  // Extract post data from request body using destructuring
-  const { title, description, content, imageUrl, tags, category } = await request.json();
-
   try {
+    // Check if user is logged in with valid JWT token
+    if (!await isLoggedIn()) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  
+    // Extract post data from request body using destructuring
+    const { title, description, content, imageUrl, tags, category } = await request.json();
+
+    // Validate required fields
+    if (!title || !content) {
+      return NextResponse.json({ error: "Title and content are required" }, { status: 400 });
+    }
+    
     // Attempt to create the post using helper function
     const post = await createPost(title, description, content, imageUrl, tags, category);
     
     // Return successful response with created post data
-    return new Response(JSON.stringify(post), {
-      status: 201,      // 201 Created status code
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return NextResponse.json(post, { status: 201 });
   } catch (error) {
+    console.error("Error creating post:", error);
+    
     // If any error occurs during post creation, return error response
-    return new Response(JSON.stringify({ error: "Failed to create post" }), {
-      status: 500,      // 500 Internal Server Error status code
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return NextResponse.json({ error: "Failed to create post" }, { status: 500 });
   }
 }

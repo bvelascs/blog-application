@@ -19,50 +19,65 @@ const LoginScreen = ({
   // Add state for loading indicator
   const [isLoading, setIsLoading] = useState(false);
   // Add state for error message
-  const [error, setError] = useState<string | null>(null);
-
-  // Handle form submission
-  function submitHandler(e: React.FormEvent<HTMLFormElement>) {
+  const [error, setError] = useState<string | null>(null);  // Handle form submission
+  async function submitHandler(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
     // Clear any previous errors
     setError(null);
     
-    // Set loading state to true to show the indicator
+    // Set loading state to show the indicator
     setIsLoading(true);
     
-    // Validate password
-    if (password === passwordRef.current!.value) {
+    try {
+      // Get input values
+      const inputUsername = userRef.current?.value;
+      const inputPassword = passwordRef.current?.value;
+      
+      // Validate input exists
+      if (!inputUsername || !inputPassword) {
+        setError("Username and password are required");
+        setIsLoading(false);
+        return;
+      }
+      
+      // Instead of doing client-side validation, we'll send credentials to the server
+      console.log("Attempting login with:", { username: inputUsername });
+      
       // Make API call to login endpoint
-      fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         // Send user credentials
         body: JSON.stringify({
-          username: userRef.current!.value,
-          password: passwordRef.current!.value,
+          username: inputUsername,
+          password: inputPassword,
         }),
-      }).then((loginResponse) => {
-        if (loginResponse.ok) {
-          // Redirect to home page on successful login
-          window.location.href = "/";
-        } else {
-          // Handle failed login attempt
-          setError("Login failed. Please check your credentials.");
-          console.error("Login failed");
-          setIsLoading(false);
-        }
-      }).catch(() => {
-        setError("An error occurred while trying to log in. Please try again.");
-        setIsLoading(false);
       });
-    } else {
-      // Show error for invalid credentials
-      setError("Invalid username or password");
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Login successful, token received");
+        
+        // Brief delay to show success state
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Redirect to home page on successful login
+        window.location.href = "/";
+      } else {
+        // Parse error message from response
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.error || "Login failed. Please check your credentials.");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("An error occurred while trying to log in. Please try again.");
       setIsLoading(false);
-    }  }
+    }
+  }
 
   // Render login form
   return (

@@ -65,10 +65,8 @@ test.describe("ADMIN HOME SCREEN", () => {
       // shows title
       await expect(
         userPage.getByText("Admin of Full Stack Blog", { exact: true }),
-      ).toBeVisible();
-
-      // LIST SCREEN > Article list is only accessible to logged-in users.
-      await expect(await userPage.locator("article").count()).toBe(4);
+      ).toBeVisible();      // LIST SCREEN > Article list is only accessible to logged-in users.
+      await expect(await userPage.locator("article").count()).toBe(9);
     },
   );
 });

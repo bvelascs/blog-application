@@ -35,21 +35,19 @@ export async function HistoryList({
           year: "numeric",
         });
 
-        return (
-          <div key={index} className="px-3">
+        return (          <div key={index} className="px-3">
             <Link
               title={`History / ${months[month+1]}, ${year}`}
-              className="flex space-x-2 hover:cursor-pointer hover:text-blue-700"
+              className="flex items-center space-x-3 py-2 hover:bg-blue-50 rounded-lg transition-all duration-200"
               href={`/history/${year}/${month+1}`}
             >
               <span
                 data-test-id="post-count"
-                className="flex h-7 w-7 items-center justify-center rounded-md border-[0.5px] border-gray-400"
+                className="flex h-7 w-7 items-center justify-center rounded-md border-[0.5px] border-blue-200 bg-blue-50 text-blue-700 shadow-sm text-sm font-medium"
               >
                 {count}
               </span>
-              <span>{monthAndYear}</span>
-
+              <span className="font-medium">{monthAndYear}</span>
             </Link>
           </div>
         );

@@ -2,6 +2,8 @@
 
 // Import client from @repo/db/client to interact with the database
 import { client } from '@repo/db/client';
+import { isLoggedIn } from '../../../utils/auth';
+import { NextResponse } from 'next/server';
 
 // Use the shared Prisma client instance
 const prisma = client.db;
@@ -16,14 +18,19 @@ async function getAllPosts() {
 
 // Export GET handler function for the API route
 export async function GET() {
-  // Fetch all posts using the helper function
-  const posts = await getAllPosts();
+  try {
+    // Check if user is authenticated with valid JWT token
+    if (!await isLoggedIn()) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    
+    // Fetch all posts using the helper function
+    const posts = await getAllPosts();
 
-  // Return posts as JSON response with proper headers
-  return new Response(JSON.stringify(posts), {
-    status: 200,      // 200 OK status code
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+    // Return posts as JSON response
+    return NextResponse.json(posts, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return NextResponse.json({ error: "Failed to fetch posts" }, { status: 500 });
+  }
 }

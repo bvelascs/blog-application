@@ -46,14 +46,21 @@ export function BlogDetail({ post }: { post: Post }) {
 
     incrementViews();
   }, [post.id]);
-
   useEffect(() => {
-    // Check if the user has already liked the post
+    // Check if the user has already liked the post and get total likes count
     const fetchUserLike = async () => {
       try {
         const response = await fetch(`/api/likes?postId=${post.id}`);
         const data = await response.json();
-        setLikes(data.length);
+        
+        // Update likes count using the count property from API
+        setLikes(data.count || data.likes?.length || 0);
+        
+        // Check if user already liked this post
+        const hasUserLike = data.likes?.some((like: any) => like.userIP === "192.168.100.54");
+        setUserLiked(!!hasUserLike);
+        
+        console.log("Likes data:", { count: data.count, likes: data.likes?.length, hasUserLike });
       } catch (error) {
         console.error("Error fetching user like:", error);
       }

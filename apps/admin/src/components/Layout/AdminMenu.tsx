@@ -31,11 +31,10 @@ const AdminMenu = () => {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Blog title/logo section */}
         <h1 className="flex w-fit items-center justify-center space-x-4">
-          <Link href={"/"} className="flex items-center gap-3 w-full">
-            <div className="bg-white p-1 rounded">
+          <Link href={"/"} className="flex items-center gap-3 w-full">            <div className="bg-white p-1 rounded">
               <Image src="/wsulogo.png" alt="WSU Logo" width={40} height={40} className="object-contain" />
             </div>
-            <span className="text-xl font-bold">WSU Admin Portal</span>
+            <span className="text-xl font-bold">Admin of Full Stack Blog</span>
           </Link>
         </h1>
 

@@ -3,6 +3,7 @@
 // Import Prisma ORM for database operations
 import { PrismaClient } from "@prisma/client";
 import { isLoggedIn } from '../../../../../utils/auth';
+import { NextResponse } from "next/server";
 
 // Initialize Prisma client for database connections
 const prisma = new PrismaClient();
@@ -23,20 +24,29 @@ async function updatePostActive(id: number, active: boolean) {
 
 // POST endpoint handler
 export async function POST(request: Request) {
-    if (!await isLoggedIn()) {
-        return new Response("Unauthorized", { status: 401 });
-    }
-
-    // Extract post ID and active status from request body
-    const { id, active } = await request.json();
-    
     try {
+        // Check if user is authenticated with valid JWT token
+        if (!await isLoggedIn()) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        // Extract post ID and active status from request body
+        const { id, active } = await request.json();
+        
+        // Validate required fields
+        if (id === undefined || active === undefined) {
+            return NextResponse.json({ error: "Post ID and active status are required" }, { status: 400 });
+        }
+        
         // Attempt to update the post's active status
         const post = await updatePostActive(id, active);
+        
         // Return success response with updated post data
-        return new Response(JSON.stringify(post), { status: 200 });
+        return NextResponse.json(post, { status: 200 });
     } catch (error) {
+        console.error("Error updating post active status:", error);
+        
         // Return error response if update fails
-        return new Response("Error updating post", { status: 500 });
+        return NextResponse.json({ error: "Error updating post" }, { status: 500 });
     }
 }
