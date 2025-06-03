@@ -7,14 +7,15 @@ import { ThemeContextProvider } from "../Themes/ThemeContext";
 export async function AppLayout({
   children,
   query,
-}: PropsWithChildren<{ query?: string }>) {
-  return (
+}: PropsWithChildren<{ query?: string }>) {  return (
     <ThemeContextProvider>
-      <div className="container mx-auto flex">
+      <div className="container mx-auto flex shadow-2xl dark:shadow-gray-800/30 bg-white dark:bg-gray-900 min-h-screen">
         <LeftMenu />
         <Content>
           <TopMenu query={query} />
-          {children}
+          <div className="pt-2 pb-8">
+            {children}
+          </div>
         </Content>
       </div>
     </ThemeContextProvider>

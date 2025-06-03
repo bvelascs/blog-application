@@ -4,9 +4,10 @@
 // Import necessary components and utilities
 import { BlogDetail } from "../../../components/Blog/Detail";
 import { AppLayout } from "../../../components/Layout/AppLayout";
-import { posts } from "@repo/db/data";
 import { isLoggedIn } from "../../../utils/auth";
 import LoginScreen from "../../../components/Screens/auth/login";
+import { client } from "@repo/db/client";
+import type { Post } from "@repo/db/data";
 
 // Define TypeScript interface for the page props
 // params contains the URL parameters passed to the page
@@ -30,19 +31,27 @@ export default async function Page({ params }: PageProps) {
         password={process.env.PASSWORD!}
       />
     );
-  }
-
-  // Find the post that matches the urlId from our data
-  const post = posts.find((post) => post.urlId.toString() === urlId);
+  }  // Fetch the post from the database using Prisma client
+  const prisma = client.db;
+  const dbPost = await prisma.post.findUnique({
+    where: { urlId: urlId },
+    include: { likes: true }
+  });
 
   // If no matching post is found, show error message
-  if (!post) {
+  if (!dbPost) {
     return (
       <AppLayout>
         <div>Post not found</div>
       </AppLayout>
     );
   }
+    // Convert database post to the format expected by the BlogDetail component
+  const post = {
+    ...dbPost,
+    likes: dbPost.likes.length, // Convert likes array to count
+    date: dbPost.date instanceof Date ? dbPost.date : new Date(dbPost.date)
+  } as Post;
 
   // If post is found, render it within the app layout
   return (

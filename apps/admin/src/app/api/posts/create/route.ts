@@ -7,10 +7,31 @@ const prisma = new PrismaClient();
 
 // Helper function to create a new blog post
 async function createPost(title: string, description: string, content: string, imageUrl: string, tags: string, category: string) {
+  // Create base URL-friendly ID from title
+  let baseUrlId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  
+  // Make sure we have a valid urlId (at least 3 chars)
+  if (baseUrlId.length < 3) {
+    baseUrlId = `post-${Date.now()}`;
+  }
+  
+  // Check if the urlId already exists
+  let urlId = baseUrlId;
+  let counter = 1;
+  
+  // Keep checking until we find a unique urlId
+  while (true) {
+    const existingPost = await prisma.post.findUnique({ where: { urlId } });
+    if (!existingPost) break; // Found a unique urlId
+    
+    // Try with a counter suffix
+    urlId = `${baseUrlId}-${counter}`;
+    counter++;
+  }
+  
   const post = await prisma.post.create({
     data: {
-      // Create URL-friendly ID from title (e.g., "My Post" becomes "my-post")
-      urlId: title.toLowerCase().replace(/\s+/g, "-"),
+      urlId, // Use the unique urlId
       // Using object property shorthand for matching parameter names
       title,
       description,

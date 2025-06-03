@@ -1,0 +1,5 @@
+{
+  "buildCommand": "turbo run build --filter=@repo/web",
+  "ignoreCommand": "pnpm dlx turbo-ignore",
+  "framework": "nextjs"
+}

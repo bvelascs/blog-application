@@ -4,8 +4,9 @@ import { client } from '@repo/db/client';
 
 const prisma = client.db;
 
-interface PageProps {
+type PageProps = {
   params: { urlId: string };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
 export default async function Page({ params }: PageProps) {

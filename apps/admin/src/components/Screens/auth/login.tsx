@@ -135,23 +135,7 @@ const LoginScreen = ({
                   autoComplete="current-password"
                   required
                 />
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between mt-2 mb-2">
-              <div className="flex items-center">                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-[#a31631] focus:ring-[#a31631] border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Remember me
-                </label>
-              </div>              <a href="#" className="text-sm font-medium text-[#a31631] hover:text-[#853846]">
-                Forgot your password?
-              </a>
-            </div>            <button 
+              </div>            </div>            <button 
               type="submit" 
               className={`mt-2 w-full rounded-md p-2 text-white font-medium flex items-center justify-center transition-colors duration-300 ${isLoading ? 'bg-gray-400' : 'bg-[#a31631] hover:bg-[#853846] focus:ring-2 focus:ring-offset-2 focus:ring-[#a31631]'}`}
               disabled={isLoading}
