@@ -4,8 +4,7 @@ const nextConfig = {
     domains: ["images.unsplash.com", "plus.unsplash.com", "m.media-amazon.com", "example.com"],
   },
   output: 'standalone',
-  // Enable SWC minification for improved performance
-  swcMinify: true,
+  // Next.js 15+ enables SWC minification by default, no need to specify
 };
 
 export default nextConfig;

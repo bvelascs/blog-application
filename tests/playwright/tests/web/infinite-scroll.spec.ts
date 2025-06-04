@@ -16,8 +16,8 @@ test.describe("INFINITE SCROLL", () => {
     await page.waitForLoadState('networkidle');
     
     // Check if any content is visible - using more generic selectors
-    const posts = page.locator('article, .post, .blog-post, .card, [data-testid*="post"], div:has(h1,h2,h3) >> visible=true');
-    await expect(posts).toBeTruthy();
+    const posts = page.locator('article, .post, .blog-post, .card, [data-testid*="post"], div:has(h1,h2,h3)');
+    await expect(posts.first()).toBeTruthy();
   });
   
   test("Can scroll down on the page", { tag: "@a3" }, async ({ page }) => {

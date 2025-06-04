@@ -4,12 +4,13 @@ import { client } from '@repo/db/client';
 
 const prisma = client.db;
 
-type PageProps = {
+// Define the props type in line with Next.js expectations
+type Props = {
   params: { urlId: string };
   searchParams?: Record<string, string | string[] | undefined>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const { urlId } = params;
 
   // Fetch the specific post directly from the database

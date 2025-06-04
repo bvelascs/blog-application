@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import ThemeSwitch from "../Themes/ThemeSwitcher";
 import { ChangeEvent } from "react";
 
-function debounce<T extends (...args: Any[]) => Any>(fn: T, delay = 300) {
-  let timeoutId: Any;
+function debounce<T extends (...args: any[]) => any>(fn: T, delay = 300) {
+  let timeoutId: ReturnType<typeof setTimeout>;
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn.apply(this, args), delay);
   };
 }
 
-export function TopMenu({ query }: { query?: string }) {
+export function TopMenu({ query: initialQuery }: { query?: string }) {
   const router = useRouter();
 
   const handleSearch = debounce(
