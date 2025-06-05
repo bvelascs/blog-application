@@ -14,14 +14,29 @@ export async function seed() {
   // Delete all existing posts
   await prisma.post.deleteMany({});
   console.log("Deleted existing posts");
-  
-  // Create all posts from data.ts
+    // Create all posts from data.ts and their likes
   for (const post of posts) {
     // Create post without the likes field which isn't compatible with Prisma schema
     const { likes, ...postData } = post;
-    await prisma.post.create({
+    
+    // Create the post first
+    const createdPost = await prisma.post.create({
       data: postData,
     });
+      // Then create the specified number of likes for this post
+    if (likes && likes > 0) {
+      // Create likes one by one (SQLite doesn't support createMany)
+      for (let i = 0; i < likes; i++) {
+        await prisma.like.create({
+          data: {
+            postId: createdPost.id,
+            userIP: `192.168.1.${i + 1}` // Generate mock IPs
+          }
+        });
+      }
+      
+      console.log(`Created ${likes} likes for post "${createdPost.title}"`);
+    }
   }
   console.log(`Created ${posts.length} posts`);
 

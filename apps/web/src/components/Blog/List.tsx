@@ -14,13 +14,11 @@ function getGreeting() {
   return "Good evening";
 }
 
-export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
-  const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
+export function BlogList({ posts: initialPosts }: { posts: Post[] }) {  const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const loaderRef = useRef<HTMLDivElement>(null);
-  const POSTS_PER_PAGE = 5;
+  const loaderRef = useRef<HTMLDivElement>(null);  const POSTS_PER_PAGE = 4; // Show fewer posts initially to ensure infinite scroll is triggered
   // Initialize with the first batch
   useEffect(() => {
     // For debugging, log the likes values in the initial posts
@@ -66,11 +64,13 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
         setHasMore(data.hasMore);
       } else {
         setHasMore(false);
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error("Error loading more posts:", error);
     } finally {
-      setLoading(false);
+      // Add a small delay to make the loading animation more noticeable
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
     }
   }, [currentPage, loading, hasMore]);
   
@@ -104,20 +104,13 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {
           post={post}
           likes={post.likes}
           views={post.views}
-        />
-      ))}
-      
-      {/* Custom section between posts and loader */}
-      <div className="bg-gray-50 p-4 rounded-md shadow-sm border border-gray-100">
-        <h3 className="text-lg font-medium mb-2">Recommended for you</h3>
-        <p className="text-gray-600">Discover more content based on your reading history.</p>
-      </div>
+        />      ))}
       
       {/* Loading indicator and end of content message */}
       <div ref={loaderRef} className="py-4 text-center">
         {loading && (
           <div className="flex justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#a31631] border-t-transparent"></div>
           </div>
         )}
         {!hasMore && visiblePosts.length > 0 && (

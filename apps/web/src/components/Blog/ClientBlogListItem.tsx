@@ -10,9 +10,8 @@ type ClientBlogListItemProps = {
 };
 
 export function ClientBlogListItem({ post, likes, views }: ClientBlogListItemProps) {
-  return (
-    <article
-      className="flex flex-row gap-8 p-8 transition-shadow duration-300 hover:shadow-lg"
+  return (    <article
+      className="flex flex-row gap-8 p-8 transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-gray-800/30"
       data-test-id={`blog-post-${post.id}`}
     >
       {/* Post Image Section */}
@@ -33,32 +32,27 @@ export function ClientBlogListItem({ post, likes, views }: ClientBlogListItemPro
           {post.title}
         </Link>
 
-        {/* Category */}
-        <div className="mt-2">
-          <span className="rounded-full bg-blue-100 px-2 py-1 text-blue-600">
+        {/* Category */}        <div className="mt-2">
+          <span className="rounded-full bg-blue-100 dark:bg-blue-900 px-2 py-1 text-blue-600 dark:text-blue-300">
             {post.category}
           </span>
-        </div>
-
-        {/* Post Description */}
-        <p className="mt-6 leading-relaxed text-700">{post.description}</p>
+        </div>{/* Post Description */}
+        <p className="mt-6 leading-relaxed text-gray-700 dark:text-gray-300">{post.description}</p>
 
         {/* Tags Display */}
-        <div className="mt-6 flex flex-wrap gap-2">          {post.tags.split(",").map((tag, index) => (
-            <Link
+        <div className="mt-6 flex flex-wrap gap-2">          {post.tags.split(",").map((tag, index) => (            <Link
               key={`${post.id}-tag-${index}`}
               href={`/tags/${tag.trim().toLowerCase().replace(" ", "-")}`}
-              className="rounded-full bg-blue-100 px-2 py-1 text-blue-600 hover:bg-blue-200"
+              className="rounded-full bg-blue-100 dark:bg-blue-900 px-2 py-1 text-blue-600 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800"
             >
               #{tag}
             </Link>
           ))}
         </div>
 
-        {/* Social Metrics (Views and Likes) */}
-        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500">
-          <div className="text-500">{views} views</div>
-          <div className="ml-auto flex items-center space-x-1 text-500">
+        {/* Social Metrics (Views and Likes) */}        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500 dark:text-blue-400">
+          <div className="text-gray-500 dark:text-gray-400">{views} views</div>
+          <div className="ml-auto flex items-center space-x-1 text-gray-500 dark:text-gray-400">
             {/* Heart Icon SVG */}            <svg 
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

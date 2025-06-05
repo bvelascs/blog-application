@@ -37,17 +37,16 @@ export async function HistoryList({
 
         return (          <div key={index} className="px-3">
             <Link
-              title={`History / ${months[month+1]}, ${year}`}
-              className="flex items-center space-x-3 py-2 hover:bg-blue-50 rounded-lg transition-all duration-200"
+              title={`History / ${months[month+1]}, ${year}`}              className="flex items-center space-x-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-lg transition-all duration-200"
               href={`/history/${year}/${month+1}`}
             >
               <span
                 data-test-id="post-count"
-                className="flex h-7 w-7 items-center justify-center rounded-md border-[0.5px] border-blue-200 bg-blue-50 text-blue-700 shadow-sm text-sm font-medium"
+                className="flex h-7 w-7 items-center justify-center rounded-md border-[0.5px] border-blue-200 bg-blue-50 text-blue-700 shadow-sm text-sm font-medium dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
               >
                 {count}
               </span>
-              <span className="font-medium">{monthAndYear}</span>
+              <span className="font-medium dark:text-gray-200">{monthAndYear}</span>
             </Link>
           </div>
         );
