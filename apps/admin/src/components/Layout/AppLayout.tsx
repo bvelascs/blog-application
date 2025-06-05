@@ -10,15 +10,14 @@ export async function AppLayout({
   query,
 }: PropsWithChildren<{ query?: string }>) {
   return (
-    <ThemeContextProvider>
-      <div className="min-h-screen flex flex-col bg-gray-50">
+    <ThemeContextProvider>      <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
         <AdminMenu />
         <div className="flex flex-1">
           <LeftMenu />
           <main className="flex-1 p-6">
             <div className="container mx-auto">
               <TopMenu query={query} />
-              <div className="mt-6 bg-white shadow rounded-lg p-6">
+              <div className="mt-6 bg-white dark:bg-gray-800 shadow dark:shadow-gray-700/30 rounded-lg p-6">
                 {children}
               </div>
             </div>

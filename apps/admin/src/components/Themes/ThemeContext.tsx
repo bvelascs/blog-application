@@ -39,9 +39,12 @@ export const ThemeContextProvider: React.FC<React.PropsWithChildren> = (
     theme: theme as Theme,
     toggleTheme: toggleThemeHandler,
   };
-
   useEffect(() => {
+    // Update data-theme attribute
     document.documentElement.setAttribute("data-theme", theme);
+    
+    // Also synchronize with cookie for persistence
+    document.cookie = `theme=${theme}; path=/; max-age=31536000`; // 1 year expiration
   }, [theme]);
 
   // 3. Use the provider in your layout

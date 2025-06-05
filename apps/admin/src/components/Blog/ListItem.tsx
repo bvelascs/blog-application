@@ -64,12 +64,12 @@ export function BlogListItem({ post }: { post: Post }) {  // State to track post
 
   return (
     // Main article container with hover effects
-    <article className="flex flex-row gap-8 p-8 transition-shadow duration-300 hover:shadow-lg">
+    <article className="flex flex-row gap-8 p-8 transition-shadow duration-300 hover:shadow-lg dark:hover:shadow-gray-900/50 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
       {/* Post Featured Image */}
       <img
         src={post.imageUrl}
         alt={post.title}
-        className="h-96 w-96 rounded-lg object-cover"
+        className="h-96 w-96 rounded-lg object-cover transition-transform duration-200 hover:scale-105"
       />
 
       {/* Post Content Container */}
@@ -78,20 +78,22 @@ export function BlogListItem({ post }: { post: Post }) {  // State to track post
         <Link
           href={`/post/${post.urlId}`}
           title={post.title}
-          className="text-2xl font-bold text-gray-800 transition-colors duration-300 hover:text-blue-600 dark:text-white"
+          className="text-2xl font-bold text-gray-800 dark:text-white transition-colors duration-300 hover:text-blue-600 dark:hover:text-blue-400"
         >
           {post.title}
-        </Link>        {/* Button Action Area */}
+        </Link>
+
+        {/* Button Action Area */}
         <div className="flex space-x-2 mt-2">
           {/* Active/Inactive Toggle Button */}
           <button
             data-test-id="active-button"
             onClick={toggleActive}
-            className="rounded-full px-4 py-2 text-sm font-semibold w-48"
-            style={{
-              backgroundColor: active ? "#dcfce7" : "#fee2e2",
-              color: active ? "#047857" : "#b91c1c",
-            }}
+            className={`rounded-full px-4 py-2 text-sm font-semibold w-48 transition-colors duration-200 ${
+              active 
+                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+            }`}
           >
             {active ? "Active" : "Inactive"}
           </button>
@@ -100,7 +102,7 @@ export function BlogListItem({ post }: { post: Post }) {  // State to track post
           <button
             onClick={deletePost}
             disabled={isDeleting}
-            className="rounded-full px-4 py-2 text-sm font-semibold bg-red-100 text-red-700 hover:bg-red-200 transition-colors"
+            className="rounded-full px-4 py-2 text-sm font-semibold bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors disabled:opacity-50"
           >
             {isDeleting ? "Deleting..." : "Delete"}
           </button>
@@ -108,11 +110,11 @@ export function BlogListItem({ post }: { post: Post }) {  // State to track post
         
         {/* Delete Error Message */}
         {deleteError && (
-          <p className="mt-2 text-red-500 text-sm">{deleteError}</p>
+          <p className="mt-2 text-red-500 dark:text-red-400 text-sm">{deleteError}</p>
         )}
 
         {/* Post Date and Category Information */}
-        <div className="mt-4 text-sm text-500">
+        <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
           <p>
             Posted on{" "}
             {new Date(post.date).toLocaleDateString("en-US", {
@@ -125,21 +127,30 @@ export function BlogListItem({ post }: { post: Post }) {  // State to track post
         </div>
 
         {/* Post Description */}
-        <p className="mt-6 leading-relaxed text-700">{post.description}</p>        {/* Tags Display - Join tags with comma and space */}
-        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-500">
+        <p className="mt-6 leading-relaxed text-gray-700 dark:text-gray-300">{post.description}</p>
+
+        {/* Tags Display - Join tags with comma and space */}
+        <div className="mt-6 flex flex-wrap gap-2 text-sm text-blue-600 dark:text-blue-400">
           <span>#{post.tags.split(",").map(tag => tag.trim()).join(", #")}</span>
         </div>
 
-        {/* Post Metrics Display (Views and Likes) */}        <div className="mt-6 flex gap-2 text-sm text-blue-500">
-          <div>{post.views} views</div>
-          <div className="ml-auto flex items-center space-x-1">
+        {/* Post Metrics Display (Views and Likes) */}
+        <div className="mt-6 flex gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <span>{post.views} views</span>
+          </div>
+          <div className="flex items-center gap-1">
             <svg 
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
-              stroke="red"
-              className="size-5"
+              stroke="rgb(239, 68, 68)"
+              className="h-5 w-5"
             >
               <path
                 strokeLinecap="round"

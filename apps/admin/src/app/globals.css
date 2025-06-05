@@ -30,7 +30,13 @@ html[data-theme="dark"] {
   --wsu: #a31631;
   --wsu-light: #853846;
   --wsu-secondary: #333f48;
-  --wsu-secondary-light: #5a6a76; 
+  --wsu-secondary-light: #5a6a76;
+  
+  /* Additional dark mode specific styles */
+  --bg-card: theme("colors.gray.800");
+  --bg-input: theme("colors.gray.800");
+  --border-color: theme("colors.gray.700");
+  --hover-bg: theme("colors.gray.700");
 }
 
 html {

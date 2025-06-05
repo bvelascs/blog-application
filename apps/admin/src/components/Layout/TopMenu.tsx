@@ -39,9 +39,8 @@ export function TopMenu({ query }: { query?: string }) {
     // Container with flexible content
     <div className="flex justify-between items-center mb-6">
       {/* Page title */}
-      <div>
-        <h1 className="text-2xl font-bold text-[#333f48]">Admin Dashboard</h1>
-        <p className="text-sm text-gray-500">Manage your blog content</p>
+      <div>        <h1 className="text-2xl font-bold text-[#333f48] dark:text-white transition-colors">Admin Dashboard</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors">Manage your blog content</p>
       </div>
       
       {/* Right-aligned actions */}
@@ -58,7 +57,7 @@ export function TopMenu({ query }: { query?: string }) {
             onChange={onChangeHandler}
             placeholder="Search posts..."
             defaultValue={query}
-            className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-[#a31631] focus:border-[#a31631]" 
+            className="block w-full p-2 pl-10 text-sm text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-[#a31631] focus:border-[#a31631] transition-colors" 
           />
         </div>
         

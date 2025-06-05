@@ -10,7 +10,7 @@ const ThemeSwitch = () => {
 
   return (
     <button
-      className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-sm font-medium shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:ring-offset-2 transition-colors"
+      className="inline-flex items-center justify-center rounded-md border border-gray-300 dark:border-gray-600 p-2 text-sm font-medium shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:ring-offset-2 transition-colors dark:text-white"
       onClick={themeCtx?.toggleTheme}
       title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
     >

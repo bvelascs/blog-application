@@ -225,28 +225,30 @@ export function BlogDetail({ post }: { post: Post }) {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header with WSU styling */}
-      <div className="mb-8 border-b border-gray-200 pb-5">
+      <div className="mb-8 border-b border-gray-200 dark:border-gray-700 pb-5">
         <div className="flex items-center mb-4">
           <div className="bg-[#a31631] w-1 h-8 mr-3"></div>
-          <h1 className="text-3xl font-bold">Edit Blog Post</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Blog Post</h1>
         </div>
-        <p className="text-gray-600">Make changes to your blog post below.</p>
+        <p className="text-gray-600 dark:text-gray-400">Make changes to your blog post below.</p>
       </div>
       
       {successMessage && (
-        <div className="mb-4 rounded bg-green-100 p-4 text-center">
-          <p className="text-green-700">{successMessage}</p>
+        <div className="mb-4 rounded bg-green-100 dark:bg-green-900/30 p-4 text-center">
+          <p className="text-green-700 dark:text-green-400">{successMessage}</p>
         </div>
       )}
 
       {errors.form && (
-        <div className="mb-4 rounded bg-red-100 p-4 text-center">
-          <p className="text-red-700">{errors.form}</p>
+        <div className="mb-4 rounded bg-red-100 dark:bg-red-900/30 p-4 text-center">
+          <p className="text-red-700 dark:text-red-400">{errors.form}</p>
         </div>
-      )}      <form onSubmit={(e) => e.preventDefault()} className="mx-auto max-w-4xl bg-white rounded-lg shadow-md p-6">
+      )}
+
+      <form onSubmit={(e) => e.preventDefault()} className="mx-auto max-w-4xl bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         {/* Title */}
         <div className="mb-6">
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Title
           </label>
           <input
@@ -254,15 +256,15 @@ export function BlogDetail({ post }: { post: Post }) {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631]"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631] transition-colors duration-200"
             placeholder="Enter post title"
           />
-          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
+          {errors.title && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.title}</p>}
         </div>
 
         {/* Description */}
         <div className="mb-6">
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Description
           </label>
           <textarea
@@ -282,19 +284,19 @@ export function BlogDetail({ post }: { post: Post }) {
               });
             }}
             data-testid="description-input"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631]"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631] transition-colors duration-200"
             rows={3}
             placeholder="Brief summary of the post"
           />
-          {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
+          {errors.description && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.description}</p>}
         </div>
 
         {/* Content */}
         <div className="mb-6">
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="content" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Content
           </label>
-          <div className={`border border-gray-300 rounded-md shadow-sm overflow-hidden ${isPreview ? 'hidden' : 'block'}`}>
+          <div className={`border border-gray-300 dark:border-gray-600 rounded-md shadow-sm overflow-hidden ${isPreview ? 'hidden' : 'block'}`}>
             <RichTextEditor
               content={content}
               onChange={setContent}
@@ -303,79 +305,50 @@ export function BlogDetail({ post }: { post: Post }) {
           </div>
           <div
             data-test-id="content-preview"
-            className={`prose mt-4 border p-4 rounded-md ${isPreview ? 'block' : 'hidden'}`}
+            className={`prose dark:prose-invert mt-4 border border-gray-300 dark:border-gray-600 p-4 rounded-md ${isPreview ? 'block' : 'hidden'}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
-          {errors.content && <p className="mt-2 text-sm text-red-600">{errors.content}</p>}
+          {errors.content && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.content}</p>}
         </div>
 
         {/* Image Upload and URL */}
         <div className="mb-6">
-          <label htmlFor="image-upload" className="block text-sm font-medium text-gray-700 mb-1">
-            Featured Image
+          <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Image URL
           </label>
+          <input
+            id="imageUrl"
+            type="text"
+            value={imageUrl}
+            onChange={(e) => {
+              setImageUrl(e.target.value);
+              setImagePreview(e.target.value);
+            }}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631] transition-colors duration-200"
+            placeholder="Enter image URL"
+          />
 
-          <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-            {/* Image Upload Section */}
-            <div className="space-y-4">
-              <div>
-                <p className="text-sm font-medium text-gray-700 mb-2">Upload a new image:</p>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/jpeg,image/png,image/gif"
-                  onChange={handleImageUpload}
-                  className="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-md file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-[#a31631] file:text-white
-                    hover:file:bg-[#853846] cursor-pointer"
-                />
-                {isUploading && (
-                  <div className="mt-2 flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#a31631] mr-2"></div>
-                    <span className="text-sm text-[#a31631]">Uploading...</span>
-                  </div>
-                )}
-              </div>
+          {errors.imageUrl && <p className="mt-2 text-sm text-red-600 dark:text-red-400">{errors.imageUrl}</p>}
 
-              <div className="border-t border-gray-200 pt-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Or enter an image URL:</p>
-                <input
-                  id="image-url"
-                  type="text"
-                  value={imageUrl}
-                  onChange={handleImageUrlChange}
-                  disabled={isUploading}
-                  placeholder="https://example.com/image.jpg"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631]"
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Preview:</p>
+              <div className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
+                <img
+                  data-test-id="image-preview"
+                  src={imagePreview}
+                  alt="Preview"
+                  className="max-h-96 w-full object-cover"
                 />
               </div>
             </div>
-
-            {errors.imageUrl && <p className="mt-2 text-sm text-red-600">{errors.imageUrl}</p>}
-
-            {/* Image Preview */}
-            {imagePreview && (
-              <div className="mt-4 border-t border-gray-200 pt-4">
-                <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
-                <div className="border border-gray-300 rounded-lg overflow-hidden">
-                  <img
-                    data-test-id="image-preview"
-                    src={imagePreview}
-                    alt="Preview"
-                    className="max-h-96 w-full object-cover"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
         {/* Category */}
         <div className="mb-6">
-          <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Category
           </label>
           <input
@@ -384,14 +357,14 @@ export function BlogDetail({ post }: { post: Post }) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="React, DevOps, Node, etc."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631]"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631] transition-colors duration-200"
           />
-          {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category}</p>}
+          {errors.category && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.category}</p>}
         </div>
 
         {/* Tags */}
         <div className="mb-6">
-          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="tags" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Tags
           </label>
           <input
@@ -400,15 +373,17 @@ export function BlogDetail({ post }: { post: Post }) {
             value={tags}
             onChange={(e) => setTags(e.target.value)}
             placeholder="Front-end, Databases, Dev Tools"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631]"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#a31631] focus:border-[#a31631] transition-colors duration-200"
           />
-          {errors.tags && <p className="mt-1 text-sm text-red-600">{errors.tags}</p>}
-        </div>        {/* Form feedback and submission section */}
-        <div className="border-t border-gray-200 pt-6 mt-6">
+          {errors.tags && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{errors.tags}</p>}
+        </div>
+
+        {/* Form feedback and submission section */}
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-6">
           {/* Error and success messages */}
           <div className="mb-4">
             {errors.form && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+              <div className="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 p-4 mb-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -416,30 +391,14 @@ export function BlogDetail({ post }: { post: Post }) {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm text-red-700">{errors.form}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Delete error message */}
-            {deleteError && (
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
-                <div className="flex">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <p className="text-sm text-red-700">{deleteError}</p>
+                    <p className="text-sm text-red-700 dark:text-red-400">{errors.form}</p>
                   </div>
                 </div>
               </div>
             )}
 
             {successMessage && (
-              <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+              <div className="bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 p-4 mb-4">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
@@ -447,20 +406,20 @@ export function BlogDetail({ post }: { post: Post }) {
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm text-green-700">{successMessage}</p>
+                    <p className="text-sm text-green-700 dark:text-green-400">{successMessage}</p>
                   </div>
                 </div>
               </div>
             )}
           </div>
-        
+          
           {/* Action buttons */}
           <div className="flex justify-between space-x-3">
             <div className="flex space-x-2">
               <button
                 type="button"
                 onClick={togglePreview}
-                className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a31631]"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a31631] transition-colors duration-200"
               >
                 {isPreview ? "Close Preview" : "Preview"}
               </button>
@@ -471,7 +430,7 @@ export function BlogDetail({ post }: { post: Post }) {
                   type="button"
                   onClick={handleDelete}
                   disabled={isDeleting}
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:bg-red-300 disabled:cursor-not-allowed"
+                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:bg-red-300 dark:disabled:bg-red-800 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   {isDeleting ? (
                     <>
@@ -481,16 +440,17 @@ export function BlogDetail({ post }: { post: Post }) {
                       </svg>
                       Deleting...
                     </>
-                  ) : "Delete Post"}
+                  ) : (
+                    "Delete Post"
+                  )}
                 </button>
               )}
             </div>
-            
-            <button
-              type="button"
+
+            {/* Save button */}            <button
               onClick={handleSave}
-              disabled={isSubmitting || isUploading}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#a31631] hover:bg-[#853846] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a31631] disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#a31631] hover:bg-[#853846] dark:bg-[#853846] dark:hover:bg-[#a31631] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#a31631] disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {isSubmitting ? (
                 <>
@@ -500,7 +460,9 @@ export function BlogDetail({ post }: { post: Post }) {
                   </svg>
                   Saving...
                 </>
-              ) : "Save Changes"}
+              ) : (
+                'Save Changes'
+              )}
             </button>
           </div>
         </div>
