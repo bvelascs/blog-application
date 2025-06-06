@@ -5,8 +5,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import Image from "next/image";
 
-const AdminMenu = () => {
-  // Handler function for user logout
+const AdminMenu = () => {  // Handler function for user logout
   async function logoutHandler() {
     // Send POST request to logout endpoint
     const res = await fetch("/api/auth/logout", {
@@ -16,10 +15,11 @@ const AdminMenu = () => {
       },
     });
 
-    // If logout successful, redirect to home page
+    // If logout successful, force navigation to home page
     // Otherwise, log error to console
     if (res.ok) {
-      redirect("/");
+      // Use window.location for a full page refresh to clear any cached content
+      window.location.href = "/";
     } else {
       console.error("Logout failed");
     }

@@ -6,6 +6,8 @@
 
 A blog application featuring both user-facing and administrative interfaces. This project implements a fully functional blog system with rich text editing, infinite scroll, and image uploads.
 
+> **Note:** This project is currently configured for local development only. Please follow the installation steps below to run the application on your local machine.
+
 ## Tech Stack
 
 - **Frontend**: Next.js 15, React 19, Tailwind CSS 4
@@ -36,11 +38,7 @@ A blog application featuring both user-facing and administrative interfaces. Thi
    ```
 
 3. Create a `.env` file in the root directory with the required environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-   Then edit the `.env` file with your own secure credentials.
-
+ 
 4. Install turbo:
    ```bash
    npm i -g turbo
@@ -92,3 +90,15 @@ This project uses GitHub Actions for continuous integration and deployment:
      - Infinite Scroll
      - Image Uploads
    - Run E2E tests with: `turbo test-3`
+
+## Testing the Application
+
+To fully test this application locally:
+
+1. Follow the installation steps above to set up the project
+2. Ensure you've set your `.env` file
+3. Run both the web and admin applications using `turbo dev`
+4. Test the new features:
+   - **Rich Text Editor**: Create or edit a post in the admin interface
+   - **Infinite Scroll**: Browse posts on the web interface and scroll down to load more
+   - **Image Uploads**: Add an image when creating/editing posts in the admin interface

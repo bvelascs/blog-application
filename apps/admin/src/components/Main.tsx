@@ -192,10 +192,9 @@ export function Main({
               type="text"
               placeholder="Enter a tag name"
             />
-          </div>
-          <div>
+          </div>          <div>
             <label htmlFor="date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Filter by date:
+              Filter by Date Created:
             </label>
             <input
               id="date"
