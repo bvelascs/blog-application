@@ -123,43 +123,37 @@ export function Main({
       {/* Stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-[#a31631]">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-red-100 dark:bg-red-900/30 mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#a31631]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center">            <div className="p-3 rounded-full bg-red-100 dark:bg-red-800 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#a31631] dark:text-red-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
-            <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider">Total Posts</p>
-              <p className="text-3xl font-bold text-gray-800 dark:text-white">{totalPosts}</p>
+            <div>              <p className="text-gray-700 dark:text-gray-300 text-sm font-medium uppercase tracking-wider">Total Posts</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{totalPosts}</p>
             </div>
           </div>
         </div>
         
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-[#333f48]">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#333f48]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center">            <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-800 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-[#333f48] dark:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider">Active Posts</p>
-              <p className="text-3xl font-bold text-gray-800 dark:text-white">{activeTotalPosts}</p>
+            <div>              <p className="text-gray-700 dark:text-gray-300 text-sm font-medium uppercase tracking-wider">Active Posts</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{activeTotalPosts}</p>
             </div>
           </div>
         </div>
         
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 border-l-4 border-yellow-500">
-          <div className="flex items-center">
-            <div className="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900/30 mr-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center">            <div className="p-3 rounded-full bg-yellow-100 dark:bg-yellow-800 mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600 dark:text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
               </svg>
             </div>
-            <div>
-              <p className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider">Draft Posts</p>
-              <p className="text-3xl font-bold text-gray-800 dark:text-white">{draftPosts}</p>
+            <div>              <p className="text-gray-700 dark:text-gray-300 text-sm font-medium uppercase tracking-wider">Draft Posts</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">{draftPosts}</p>
             </div>
           </div>
         </div>
