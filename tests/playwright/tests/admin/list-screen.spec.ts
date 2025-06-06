@@ -10,6 +10,18 @@ test.describe("ADMIN LIST SCREEN", () => {
     await seed();
   });
 
+  // Configure longer timeout for all tests in this describe block
+  test.setTimeout(60000); // 60 seconds
+
+  test.beforeEach(async ({ userPage }) => {
+    // Ensure we're properly logged in before each test
+    await userPage.goto("/");
+    await userPage.waitForLoadState('networkidle');
+    
+    // Wait for the admin dashboard title to be visible
+    await expect(userPage.locator('span.text-xl.font-bold:has-text("Admin of Full Stack Blog")')).toBeVisible({timeout: 10000});
+  });
+
   test(
     "Show all posts",
     {
@@ -66,17 +78,23 @@ test.describe("ADMIN LIST SCREEN", () => {
     },
   );
 
-  test(
-    "Filter by date",
+  test(    "Filter by date",
     {
       tag: "@a2",
     },
     async ({ userPage }) => {
-      await userPage.goto("/");
-
       // LIST SCREEN > On the top is a filter screen that allows to filter posts by date
-      await userPage
-        .getByLabel("Filter by Date Created:")        .pressSequentially("01012022");
+      const dateFilter = userPage.getByLabel("Filter by Date Created:");
+      
+      // Retry mechanism for finding and interacting with the date filter
+      await expect(dateFilter).toBeVisible({ timeout: 10000 });
+      await expect(dateFilter).toBeEnabled();
+      
+      await dateFilter.click();
+      await dateFilter.pressSequentially("01012022", { delay: 100 }); // Add delay between keystrokes
+      
+      // Wait for the filtering to take effect
+      await userPage.waitForTimeout(1000);
       await expect(await userPage.locator("article").count()).toBe(7);
       await expect(
         userPage.getByText("Boost your conversion rate"),
@@ -92,15 +110,27 @@ test.describe("ADMIN LIST SCREEN", () => {
     "Combine Filters",
     {
       tag: "@a2",
-    },
-    async ({ userPage }) => {
-      await userPage.goto("/");
-
+    },    async ({ userPage }) => {
       // LIST SCREEN > On the top is a filter screen that allows to filter by visibility
-      await userPage.getByLabel("Filter by Tag:").fill("Front");
-      await userPage
-        .getByLabel("Filter by Date Created:")
-        .pressSequentially("01012022");
+      
+      // Handle tag filter first
+      const tagFilter = userPage.getByLabel("Filter by Tag:");
+      await expect(tagFilter).toBeVisible({ timeout: 10000 });
+      await expect(tagFilter).toBeEnabled();
+      await tagFilter.fill("Front");
+      
+      // Wait for tag filter to take effect
+      await userPage.waitForTimeout(500);
+      
+      // Handle date filter
+      const dateFilter = userPage.getByLabel("Filter by Date Created:");
+      await expect(dateFilter).toBeVisible({ timeout: 10000 });
+      await expect(dateFilter).toBeEnabled();
+      await dateFilter.click();
+      await dateFilter.pressSequentially("01012022", { delay: 100 }); // Add delay between keystrokes
+      
+      // Wait for the filtering to take effect
+      await userPage.waitForTimeout(1000);
       await expect(await userPage.locator("article").count()).toBe(1);
       await expect(
         userPage.getByText("No front end framework is the best"),

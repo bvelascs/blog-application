@@ -9,9 +9,12 @@ import { ClientBlogListItem } from "./ClientBlogListItem";
 
 function getGreeting() {
   const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return "Good morning";
-  if (hour >= 12 && hour < 18) return "Good afternoon";
-  return "Good evening";
+  let timeGreeting;
+  if (hour >= 5 && hour < 12) timeGreeting = "Good morning";
+  else if (hour >= 12 && hour < 18) timeGreeting = "Good afternoon";
+  else timeGreeting = "Good evening";
+  
+  return `${timeGreeting}, Guest`;
 }
 
 export function BlogList({ posts: initialPosts }: { posts: Post[] }) {  const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
@@ -95,8 +98,17 @@ export function BlogList({ posts: initialPosts }: { posts: Post[] }) {  const [v
   }, [loadMorePosts, hasMore, loading]);
 
   return (
-    <div className="flex flex-col gap-8">
-      <h2 className="text-xl font-medium mb-4">{getGreeting()}, Brandon</h2>
+    <div className="flex flex-col gap-8 -mt-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+        <div>
+          <h2 className="text-2xl font-bold text-[#a31631] dark:text-[#ff1f4b] mb-2">
+            {getGreeting()}
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300">
+            Welcome to the WSU Blog Application
+          </p>
+        </div>
+      </div>
       
       {visiblePosts.map((post) => (
         <ClientBlogListItem

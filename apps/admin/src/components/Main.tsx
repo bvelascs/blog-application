@@ -115,8 +115,8 @@ export function Main({
   return (
     <main className={className}>
       {/* Welcome message */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#333f48] dark:text-white">{getGreeting()}, Admin</h1>
+      <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 border-l-4 border-[#a31631]">
+        <h1 className="text-3xl font-bold text-[#333f48] dark:text-white mb-2">{getGreeting()}</h1>
         <p className="text-gray-600 dark:text-gray-400">Welcome to your WSU Blog Administration Dashboard</p>
       </div>
       

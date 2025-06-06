@@ -3,9 +3,12 @@ import { BlogListItem } from "./ListItem";
 
 export function getGreeting() {
   const hour = new Date().getHours();
-  if (hour >= 5 && hour < 12) return "Good morning";
-  if (hour >= 12 && hour < 18) return "Good afternoon";
-  return "Good evening";
+  let timeGreeting;
+  if (hour >= 5 && hour < 12) timeGreeting = "Good morning";
+  else if (hour >= 12 && hour < 18) timeGreeting = "Good afternoon";
+  else timeGreeting = "Good evening";
+
+  return `${timeGreeting}, Admin`;
 }
 
 export function BlogList({ posts }: { posts: Post[] }) {
@@ -17,7 +20,8 @@ export function BlogList({ posts }: { posts: Post[] }) {
     );
   }
   return (
-    <div className="w-full">      <div className="p-4">
+    <div className="w-full">
+      <div className="p-4">
         <h2 className="text-4xl font-bold">From the blog</h2>
         <p>Learn how to grow your business with our expert advice.</p>
         <div className="py-12">

@@ -5,10 +5,10 @@ export const env = createEnv({
   /**
    * Specify your server-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars.
-   */
-  server: {
+   */  server: {
     PASSWORD: z.string(),
     JWT_SECRET: z.string(),
+    DATABASE_URL: z.string().url(),
   },
 
   /**
@@ -23,11 +23,11 @@ export const env = createEnv({
   /**
    * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
    * middlewares) or client-side so we need to destruct manually.
-   */
-  runtimeEnv: {
+   */  runtimeEnv: {
     // E2E: process.env.E2E,
     PASSWORD: process.env.PASSWORD,
     JWT_SECRET: process.env.JWT_SECRET,
+    DATABASE_URL: process.env.DATABASE_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

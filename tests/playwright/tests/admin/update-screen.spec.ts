@@ -38,7 +38,7 @@ test.describe("ADMIN UPDATE SCREEN", () => {
       // Look for the label instead of input since it's a Rich Text Editor
       await expect(userPage.locator('label[for="content"]')).toBeVisible();
       // Look for the image URL text field by its ID instead of label
-      await expect(userPage.locator('#image-url')).toBeVisible();
+      await expect(userPage.locator('#imageUrl')).toBeVisible();
       await expect(userPage.getByLabel("Tags")).toBeVisible();
       await expect(saveButton).toBeVisible();
 

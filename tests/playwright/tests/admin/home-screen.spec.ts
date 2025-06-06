@@ -27,17 +27,23 @@ test.describe("ADMIN HOME SCREEN", () => {
     {
       tag: "@a2",
     },
-    async ({ page }, testInfo) => {
-      test.setTimeout(30000); // Increase timeout to 30 seconds
-      await page.goto("/");      // HOME SCREEN > Authenticate the current client using a hard-coded password
+    async ({ page }, testInfo) => {      test.setTimeout(30000); // Increase timeout to 30 seconds
+      await page.goto("/");
+
+      // HOME SCREEN > Authenticate the current client using hard-coded credentials
+      await page.getByLabel("Username", { exact: true }).fill("admin");
       await page.getByLabel("Password", { exact: true }).fill("123");
       await page.getByText("Sign In", { exact: true }).click();
-        // Wait longer to ensure the page fully loads and renders after login
-      await page.waitForTimeout(3000);
+
+      // Wait for navigation and login to complete
+      await page.waitForURL('/**/');
+      await page.waitForLoadState('networkidle');
+
+      // Look for the title that appears after login
+      await expect(page.locator('span.text-xl.font-bold:has-text("Admin of Full Stack Blog")')).toBeVisible({timeout: 10000});
       
-      // Skip checking for specific text that might not be consistently visible
-      // Instead, check for the Logout button which confirms we're logged in
-      await expect(page.getByText("Logout")).toBeVisible({timeout: 10000});
+      // Now check for the logout button which confirms we're logged in
+      await expect(page.locator('button:has-text("Logout")')).toBeVisible({timeout: 10000});
       
       // Check for any dashboard content that would only be visible after login
       await expect(page.locator('.container')).toBeVisible({timeout: 5000});

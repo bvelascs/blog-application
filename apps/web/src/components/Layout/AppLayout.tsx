@@ -8,8 +8,7 @@ export async function AppLayout({
   children,
   query,
 }: PropsWithChildren<{ query?: string }>) {  return (
-    <ThemeContextProvider>
-      <div className="container mx-auto flex shadow-2xl dark:shadow-gray-800/30 bg-white dark:bg-gray-900 min-h-screen">
+    <ThemeContextProvider>      <div className="container mx-auto flex shadow-2xl dark:shadow-gray-800/30 bg-white dark:bg-gray-900 min-h-screen pl-16">
         <LeftMenu />
         <Content>
           <TopMenu query={query} />
