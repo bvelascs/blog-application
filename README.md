@@ -14,6 +14,7 @@ A blog application featuring both user-facing and administrative interfaces. Thi
 - **Backend**: Next.js API routes, Prisma ORM
 - **Database**: SQLite (development), PostgreSQL (production)
 - **Storage**: AWS S3 for image uploads
+- **Rich Text Editor**: TinyMCE
 - **Testing**: Vitest, Playwright for E2E testing
 - **Monorepo Management**: Turborepo, pnpm workspaces
 
@@ -23,14 +24,11 @@ A blog application featuring both user-facing and administrative interfaces. Thi
 ### Prerequisites
 - Node.js 18 or higher
 - pnpm 10.2.0 or higher
+- turbo
 
 ### Installation Steps
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/blog-application.git
-   cd blog-application
-   ```
 
 2. Install dependencies:
    ```bash
