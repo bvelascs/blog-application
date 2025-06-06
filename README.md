@@ -4,9 +4,9 @@
 
 ## Overview
 
-A blog application featuring both user-facing and administrative interfaces. This project implements a fully functional blog system with rich text editing, infinite scroll, and image uploads.
+Hello! This is a blog application that features both user-facing and administrative interfaces. This project implements a fully functional blog system with rich text editing, infinite scroll, and image uploads.
 
-> **Note:** This project is currently configured for local development only. Please follow the installation steps below to run the application on your local machine.
+> **Note:** Since this project is currently configured for local development only. Please follow the installation steps below to run the application on your local machine.
 
 ## Tech Stack
 
@@ -24,7 +24,7 @@ A blog application featuring both user-facing and administrative interfaces. Thi
 ### Prerequisites
 - Node.js 18 or higher
 - pnpm 10.2.0 or higher
-- turbo
+- turbo.json
 
 ### Installation Steps
 
